@@ -1,3 +1,19 @@
+"""
+
+demo.py demonstrates the utility of the ReFACTor algorithm by performing an EWAS on simulated data in which the phenotype is correlated with the underlying cell type composition (but no true association with the phenotype exists).
+The script compares between four different approaches:
+- A standatd analysis without adjusting for cell type composition
+- Adjusted analysis using the true cell proportions
+- Adjusted analysis using ReFACTor
+- Adjusted analysis using a standard PCA
+
+The results show that an unadjusted analysis results in an inflation, and while a standard PCA cannot entirely eliminate the inflation, ReFACTor provides the same results as given by the analysis using the real cell proportions.
+
+"""
+
+# TODO make sure we explain what this script is doing
+# TODO make sure we use all of these imports; same goes for the other files.
+
 from numpy import zeros, loadtxt, random, log10, column_stack, ones
 import matplotlib.pyplot as plot
 from scipy import stats
@@ -6,62 +22,69 @@ import refactor_lib
 import argparse
 import statsmodels.api as sm
 
-# arguments
-DATA_FILE = 'demo/demo_datafile.txt',
-K = 5 # TODO const or argument?
-T = 500,
-PHENO_FILE = 'demo/demo_phenotype.txt',
-CELL_COMP = 'demo/demo_cellproportions.txt'):
-NUM_COMPONENTS = None, 
-OUTPUT_PREFIX = "",
+# Methylation levels
+DATA_FILE = 'demo/demo_datafile.txt'
+# Phenotype
+PHENO_FILE = 'demo/demo_phenotype.txt'
+# The number of assumed cell types
+K = 5 # TODO const or argument? Elior: keep it const
+# Number of sites to be selected by ReFACTor
+T = 500
+# Number of ReFACTor components to output
+NUM_COMPONENTS = 10
+
+OUTPUT_PREFIX = "demo"
+CELL_COMP = 'demo/demo_cellproportions.txt'
 
 # run experiment
 def run():
     # read methylation data
     meth_data = MethylationData(datafile = DATA_FILE)
     
-    # run refactor
+    # Run ReFACTor; this will output
     refactor  = refactor_lib.Refactor(methylation_data = meth_data, 
                                       K = K, 
                                       t = t, 
                                       num_components = NUM_COMPONENTS, 
-                                      ranked_output_filename = output_prefix + refactor_lib.RANKED_FILENAME, 
-                                      components_output_filename  = output_prefix + refactor_lib.COMPONENTS_FILENAME)
+                                      ranked_output_filename = OUTPUT_PREFIX + refactor_lib.RANKED_FILENAME, 
+                                      components_output_filename  = OUTPUT_PREFIX + refactor_lib.COMPONENTS_FILENAME)
 
-    # read phenotype file
+    # Read the phenotype file
     pheno = loadtxt(PHENO_FILE, dtype = str)[:,1:].astype(float)
     pheno = pheno.reshape((meth_data.samples_size,))
    
-    # exp1
-    print("START EXP1")
+    # Run an uncorrected EWAS
+    print("Unadjusted analysis...")
     y = associations_test(meth_data, pheno)
     plot.subplot(221)
-    draw_plot(y=y, style='b.',title='original', xtitle='uniform distribution', ytitle='observed pvalues', xlim=(0,round(x.max())), ylim=(0,round(y.max())))
+    draw_plot(y=y, style='b.',title='Unadjusted analysis', xtitle='-log10(expected)', ytitle='-log10(observed)', xlim=(0,round(x.max())), ylim=(0,round(y.max())))
 
 
-    # exp2
-    print("START EXP2")
+    # Run an EWAS corrected for the true cell proportions
+    print("Adjusted analysis using cell proportions...")
     R = loadtxt(CELL_COMP, dtype = float)
     y = associations_test(meth_data, pheno, R)
     plot.subplot(222)
-    draw_plot(y=y, style='b.',title='R', xtitle='uniform distribution', ytitle='observed pvalues', xlim=(0,round(x.max())), ylim=(0,round(y.max())))
+    draw_plot(y=y, style='b.',title='Adjusted analysis using cell proportions', xtitle='-log10(expected)', ytitle='-log10(observed)', xlim=(0,round(x.max())), ylim=(0,round(y.max())))
 
 
-    # exp3
-    print("START EXP3")
+    # Run an EWAS corrected for the first K ReFACTor components
+    print("Adjusted analysis using ReFACTor...")
     y = associations_test(meth_data, pheno, self.refactor.components[:,:K])
     plot.subplot(223)
-    draw_plot(y=y, style='b.',title='refactor', xtitle='uniform distribution', ytitle='observed pvalues', xlim=(0,round(x.max())), ylim=(0,round(y.max())))
+    draw_plot(y=y, style='b.',title='Adjusted analysis using ReFACTor', xtitle='-log10(expected)', ytitle='-log10(observed)', xlim=(0,round(x.max())), ylim=(0,round(y.max())))
 
 
-    # exp4
-    print("START EXP4")
+    # Run an EWAS corrected for the first PCs of a standard PCA
+    print("Adjusted analysis using PCA...")
+    #TODO rename the first_pca field to standard_pca
     y = associations_test(meth_data, pheno, refactor.first_pca)
     plot.subplot(224)
-    draw_plot(y=y, style='b.', title='P', xtitle='uniform distribution', ytitle='observed pvalues', xlim=(0,round(x.max())), ylim=(0,round(y.max())))
+    draw_plot(y=y, style='b.', title='Adjusted analysis using PCA', xtitle='-log10(expected)', ytitle='-log10(observed)', xlim=(0,round(x.max())), ylim=(0,round(y.max())))
 
     plot.show()
 
+# Generates a QQ-plot for a given vector of p-values.
 def draw_plot(y, style, title, xtitle, ytitle, xlim, ylim, x=None, line=True):
     if x is None:
         unif = random.uniform(size=self.meth_data.sites_size)
@@ -69,7 +92,7 @@ def draw_plot(y, style, title, xtitle, ytitle, xlim, ylim, x=None, line=True):
         x.sort()
     plot.plot(x, y, 'b.')
 
-    if line: # add x=y line
+    if line: # add y=x line
         plot.plot(range(10), range(10), 'r-') 
 
     plot.xlabel(xtitle)
@@ -78,25 +101,20 @@ def draw_plot(y, style, title, xtitle, ytitle, xlim, ylim, x=None, line=True):
     plot.xlim(xlim[0], xlim[1])
     plot.ylim(ylim[0], ylim[1])
 
+# Performs an association test for each methylation site under a linear model.
 def associations_test(met_data, y, model_append = None):
     if model_append is not None:
         model_append = column_stack((ones(len(y)), model_append))
     else:
         model_append = ones(len(y))
-
-    # get p_value for each site
     observed_pvalues = zeros(meth_data.sites_size)
     for site_i in xrange(meth_data.sites_size):
         c = column_stack((meth_data.data[site_i,:], model_append))
-
-        # linear regression
         mod = sm.OLS(y, c)
         res = mod.fit()
-        
-        # find p_values    
         observed_pvalues[site_i] = res.pvalues[0]
     
-    
+    #TODO return the p-values and not the -log of the sorted pvalues - the -log and the sort should be done in the draw_plot, which, btw, should be named 'draw_qqplot'.
     y = -log10(observed_pvalues)
     y.sort()
     return y
