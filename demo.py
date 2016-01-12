@@ -8,7 +8,7 @@ import statsmodels.api as sm
 
 # arguments
 DATA_FILE = 'demo/demo_datafile.txt',
-K = 5
+K = 5 # TODO const or argument?
 T = 500,
 PHENO_FILE = 'demo/demo_phenotype.txt',
 CELL_COMP = 'demo/demo_cellproportions.txt'):
@@ -103,11 +103,10 @@ def associations_test(met_data, y, model_append = None):
 
 
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-k', required = True, type = int, help = "The number of assumed cell types")
+
+    args = parser.parse_args()
     run()
-parser = argparse.ArgumentParser()
-parser.add_argument('-k', required = True, type = int, help = "The number of assumed cell types")
-
-args = parser.parse_args()
-
-RefactorDemo(args.k)
 
