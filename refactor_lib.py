@@ -1,8 +1,7 @@
 import os
 import sys
-import logging
 from sklearn import preprocessing
-from numpy import dot, linalg, sqrt, hstack, loadtxt, empty_like
+from numpy import dot, linalg, sqrt, loadtxt
 import pca
 
 #TODO NOTE remember to copy the matrix before making changes!!!!
@@ -52,7 +51,7 @@ class Refactor( object ):
             return None
 
         self._validate_file_path(filepath)
-        logging.info("Loading file %s..." % filepath)
+        print("Loading file %s..." % filepath)
         data = loadtxt(filepath, dtype = str)#, converters = lambda x: x if x != 'NA' else 'nan')#,delimiter=';', missing_values='NA', filling_values=nan)# = lambda x: x if x != 'NA' else nan)#, missing_values = '???', filling_values = 0)
         # data = genfromtxt(args.datafile, dtype = str , delimiter=';', usemask = 'True', missing_values = 'NA', filling_values = "???")
 
@@ -95,9 +94,9 @@ class Refactor( object ):
         return num_comp if num_comp else self.k
 
     def run( self ):
-        logging.info('Starting ReFACTor v%s...' % self.VERSION);
-        self.components, self.ranked_sites, self.first_pca = self._refactor()
-        logging.info('ReFACTor Done!')
+        print('Starting ReFACTor v%s...' % self.VERSION);
+        self.components, self.ranked_sites, self.standard_pca = self._refactor()
+        print('ReFACTor Done!')
 
    
     """
@@ -114,10 +113,10 @@ class Refactor( object ):
     TODO add doc
     """
     def _refactor( self ):
-        logging.info('Running a standard PCA...')
+        print('Running a standard PCA...')
         pca_out1 = pca.PCA(self.meth_data.data.transpose()) 
 
-        logging.info('Compute a low rank approximation of input data and rank sites...')
+        print('Compute a low rank approximation of input data and rank sites...')
         x = self._low_rank_approximation(pca_out1.P, pca_out1.U, self.k)
         
         An = preprocessing.StandardScaler( with_mean = True, with_std = False ).fit(self.meth_data.data.transpose()).transform(self.meth_data.data.transpose()) #TODO move transpose out?
@@ -131,20 +130,17 @@ class Refactor( object ):
 
         ranked_list = distances.argsort()
 
-        logging.info('Compute ReFACTor components...')
+        print('Compute ReFACTor components...')
         sites = ranked_list[0:self.t]
 
         pca_out2 = pca.PCA(self.meth_data.data[sites,:].transpose())
-        print self.meth_data.data.shape
-        print self.meth_data.data[sites,:].shape
         score = pca_out2.P
-        print score.shape
-        print pca_out1.P.shape
-        logging.info('Saving a ranked list of the data features...')
+
+        print('Saving a ranked list of the data features...')
         data = '\n'.join(['%s\t%s'% (index, self.meth_data.cpgnames[index]) for index in ranked_list])
         self._write_file(self.ranked_output_filename, data)
 
-        logging.info('Saving the ReFACTor components...')
+        print('Saving the ReFACTor components...')
         data = '\n'.join(['\t'.join([str(i) for i in line]) for line in score[:,0:self.k]])
         self._write_file(self.components_output_filename, data)
         
