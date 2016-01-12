@@ -19,13 +19,13 @@ import refactor_lib
 import statsmodels.api as sm
 
 
-DATA_FILE = 'demo/demo_datafile.txt'             # methylation levels file path
-PHENO_FILE = 'demo/demo_phenotype.txt'           # phenotype file path
+DATA_FILE = '../demo_files/demo_datafile.txt'             # methylation levels file path
+PHENO_FILE = '../demo_files/demo_phenotype.txt'           # phenotype file path
 K = 5                                            # the number of assumed cell types
 T = 500                                          # number of sites to be selected by ReFACTor
 NUM_COMPONENTS = 10                              # number of ReFACTor components to output
-OUTPUT_PREFIX = "demo"                           # prefix for output files names
-CELL_COMP_FILE = 'demo/demo_cellproportions.txt' # cell composition file path
+OUTPUT_PREFIX = "demo_"                           # prefix for output files names
+CELL_COMP_FILE = '../demo_files/demo_cellproportions.txt' # cell composition file path
 
 
 # run experiments
