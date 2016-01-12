@@ -40,10 +40,10 @@ class RefactorDemo(object):
         yasix = range(10)
         # _, plots_arr = plot.subplots(2, 2)
         print("START EXP1")
-        x,y = self.associations_test(self.y, zeros((self.meth_data.samples_size ,)))
+        x,y = self.associations_test(self.y)
         plot.subplot(221)
         plot.plot(x, y, 'b.')
-        plot.plot(stats.linregress(xasix, yasix))
+        plot.plot(xasix, yasix, 'r-')
         plot.xlabel('uniform distribution')
         plot.ylabel('observed pvalues')
         plot.title('original')
@@ -58,7 +58,7 @@ class RefactorDemo(object):
         x,y = self.associations_test(self.y, self.R)
         plot.subplot(222)
         plot.plot(x, y, 'b.')
-        plot.plot(stats.linregress(xasix, yasix))
+        plot.plot(xasix, yasix, 'r-')
         plot.xlabel('uniform distribution')
         plot.ylabel('observed pvalues')
         plot.title('R')
@@ -73,7 +73,7 @@ class RefactorDemo(object):
         x,y  = self.associations_test(self.y, self.refactor.components[:,:K])
         plot.subplot(223)
         plot.plot(x, y, 'b.')
-        plot.plot(stats.linregress(xasix, yasix))
+        plot.plot(xasix, yasix, 'r-')
         plot.xlabel('uniform distribution')
         plot.ylabel('observed pvalues')
         plot.title('refactor')
@@ -87,7 +87,7 @@ class RefactorDemo(object):
         x,y = self.associations_test(self.y, self.refactor.first_pca)
         plot.subplot(224)
         plot.plot(x, y, 'b.')
-        plot.plot(stats.linregress(xasix, yasix))
+        plot.plot(xasix, yasix, 'r-')
         plot.xlabel('uniform distribution')
         plot.ylabel('observed pvalues')
         plot.title('P')
@@ -104,12 +104,15 @@ class RefactorDemo(object):
         plot.show()
 
 
-    def associations_test(self, y, model_append):
+    def associations_test(self, y, model_append = None):
         observed_pvalues = zeros((self.meth_data.sites_size,))
         import pdb
         # pdb.set_trace()
         for site_i in xrange(self.meth_data.sites_size):
-            c =   column_stack((self.meth_data.data[0,:], model_append))
+            if model_append is not None:
+                c = column_stack((self.meth_data.data[site_i,:], model_append))
+            else:
+                c = self.meth_data.data[site_i,:]
             # model = LinearRegression(y, c) # find most effocoent func
             mod = sm.OLS(y, c)
             res = mod.fit()
