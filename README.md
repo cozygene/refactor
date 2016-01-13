@@ -1,7 +1,7 @@
 # ReFACTor v1.0
 
 Reference-Free Adjustment for Cell-Type composition (ReFACTor) is an unsupervised method for the correction of cell-type heterogeneity in epigenome-wide association studies (EWAS), which is based on a variant of principal component analysis (PCA). ReFACTor is described in the following [paper](http://) (upcoming).
-
+s
 As decribed bellow, ReFACTor is available in R and in python. For users working with large datasets we recommend using the much faster python version.
 
 ### Download
@@ -14,7 +14,7 @@ Dependencies for the python version are desribed at the end of this file.
 ### Input
 
 ReFACTor takes the following arguments:
-  * datafile: A data file of sites by samples matrix of beta-normalized methylation levels. The first row should contain the sample IDs and the first column should contain the CpG IDs (see demo_datafile.txt for example)
+  * datafile: A data file of sites by samples matrix of beta-normalized methylation levels. The first row should contain the sample IDs and the first column should contain the CpG IDs (see demo_files/demo_datafile.txt for example)
   * k: the number of assumed cell types
   * t (optional): The number of sites to use for computing the ReFACtor components (default is 500)
   * numcomp (optional): The number of ReFACTor components to output (default is same as k)
@@ -45,13 +45,13 @@ ranked_list <- results$ranked_list # Extract the list of sites ranked by ReFACTo
 
 #### python
 
-Execute directly from the command line:
+Execute from the command line:
 ```
-python refactor.py -datafile <datafile> -k <k>
+python refactor.py --datafile <datafile> -k <k>
 ```
 or, if including the optional parameters:
 ```
-python refactor.py -datafile <data_file> -k <k> -t<t> -numcomp <num_components> -out <out_prefix>
+python refactor.py --datafile <data_file> -k <k> -t<t> -numcomp <num_components> --out <out_prefix>
 ```
 
 ### Demo
@@ -67,7 +67,7 @@ Rscript demo.R
 
 #### python
 
-Execute directly from the command line:
+Execute from the command line:
 ```
 python demo.py
 ```
@@ -78,13 +78,13 @@ python demo.py
 
 ### Dependencies
 
-For the python version we recommend using a standard python distribution such as Anaconda (https://www.continuum.io/downloads). This release of ReFACTor iswas implemented for python v2.7 and has the following dependencies:
+For the python version we recommend using a standard python distribution such as Anaconda (https://www.continuum.io/downloads). This release of ReFACTor was implemented for python v2.7 and has the following dependencies:
 
     numpy
     scipy
-    statsmodels
     sklearn
-    matplotlib (required for the demo.py)
+    matplotlib (required only for the demo.py)
+    statsmodels (required only for the demo.py)
 
 ### Citing ReFACTor
 
