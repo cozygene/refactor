@@ -20,8 +20,8 @@ def run():
                                      epilog = "")
       
       parser.add_argument('--datafile', required = True, type = str,                help = "A data matrix file of beta-normalized methylation levels; see the README file for more details")
-      parser.add_argument('-k',         required = True, type = int,                help = "The number of assumed cell types")
-      parser.add_argument('-t',                          type = int, default = 500, help = "The number of sites to use for computing the ReFACTor components (DEFAULT=500)")
+      parser.add_argument('--k',        required = True, type = int,                help = "The number of assumed cell types")
+      parser.add_argument('--t',                         type = int, default = 500, help = "The number of sites to use for computing the ReFACTor components (DEFAULT=500)")
       parser.add_argument('--numcomp',                   type = int,                help = "The number of ReFACTor components to output (DEFAULT=K)")
       parser.add_argument('--out',                       type = str, default ="",   help = "changes the prefix of the output file ")
 

@@ -35,23 +35,24 @@ Alternatively, the refactor.R function can be executed within an R script as fol
 
 ```
 # <R code>
-source("refactor.R")
-K = 5
-datafile = "demo/demo_datafile.txt"
-results <- refactor(datafile,K)
-RC <- results$refactor_components # Extract the ReFACTor components
-ranked_list <- results$ranked_list # Extract the list of sites ranked by ReFACTor
+Execute from the command line:
+```
+Rscript refactor.R <datafile> <k>
+```
+or, if including the optional parameters:
+```
+Rscript refactor.R <datafile> <k> <num_components>
 ```
 
 #### python
 
 Execute from the command line:
 ```
-python refactor.py --datafile <datafile> -k <k>
+python refactor.py --datafile <datafile> --k <k>
 ```
 or, if including the optional parameters:
 ```
-python refactor.py --datafile <data_file> -k <k> -t<t> -numcomp <num_components> --out <out_prefix>
+python refactor.py --datafile <data_file> --k <k> --t<t> --numcomp <num_components> --out <out_prefix>
 ```
 
 ### Demo
