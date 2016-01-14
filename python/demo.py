@@ -1,13 +1,18 @@
 """
 
 demo.py demonstrates the utility of the ReFACTor algorithm by performing an EWAS on simulated data in which the phenotype is correlated with the underlying cell type composition (but no true association with the phenotype exists).
-The script compares between four different approaches:
+
+The script first runs ReFACTor on the data and outputs two files:
+- demo_refactor.out.components.txt: the ReFACTor components
+- demo_refactor.out.rankedlist.txt:  a ranked list of the CpGs, from the most informative site to the least informative site (as determined by ReFACTor)
+
+Second, the script performes an EWAS. Four different approaches are compared:
 - A standatd analysis without adjusting for cell type composition
-- Adjusted analysis using the true cell proportions
+- Adjusted analysis using the true cell proportions of the simulated data
 - Adjusted analysis using ReFACTor
 - Adjusted analysis using a standard PCA
 
-The results show that an unadjusted analysis results in an inflation, and while a standard PCA cannot entirely eliminate the inflation, ReFACTor provides the same results as given by the analysis using the real cell proportions.
+The results of the EWAS are saved into a file (demo_results.png), showing that unadjusted analysis results in an inflation, and while a standard PCA cannot entirely eliminate this inflation, ReFACTor can and provides the same correction given by the analysis that used the real cell proportions.
 
 """
 
@@ -19,27 +24,26 @@ import refactor_lib
 import statsmodels.api as sm
 
 
+k = 5                                            # the number of assumed cell types
+NUM_COMPONENTS = k                              # number of ReFACTor components to output
+# Simulated data:
 DATA_FILE = '../demo_files/demo_datafile.txt'             # methylation levels file path
 PHENO_FILE = '../demo_files/demo_phenotype.txt'           # phenotype file path
-K = 5                                            # the number of assumed cell types
-T = 500                                          # number of sites to be selected by ReFACTor
-NUM_COMPONENTS = 10                              # number of ReFACTor components to output
-OUTPUT_PREFIX = "demo_"                           # prefix for output files names
 CELL_COMP_FILE = '../demo_files/demo_cellproportions.txt' # cell composition file path
 
 
-# run experiments
 def run():
+
     # read methylation data
     meth_data = MethylationData(datafile = DATA_FILE)
-    
-    # Run ReFACTor; this will output
+
+    # Run ReFACTor
     refactor  = refactor_lib.Refactor(methylation_data = meth_data, 
-                                      K = K, 
-                                      t = T, 
+                                      k = k,
+                                      t = 500, 
                                       num_components = NUM_COMPONENTS, 
-                                      ranked_output_filename = OUTPUT_PREFIX + refactor_lib.RANKED_FILENAME, 
-                                      components_output_filename  = OUTPUT_PREFIX + refactor_lib.COMPONENTS_FILENAME)
+                                      ranked_output_filename = "demo_refactor.out.rankedlist.txt", 
+                                      components_output_filename  = "demo_refactor.out.components.txt")
 
     # Read the phenotype file
     pheno = loadtxt(PHENO_FILE, dtype = str)[:,1:].astype(float)
@@ -60,9 +64,9 @@ def run():
     draw_qqplot(y=y, title='Adjusted analysis using cell proportions', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 
-    # Run an EWAS corrected for the first K ReFACTor components
+    # Run an EWAS corrected for the first k ReFACTor components
     print("Adjusted analysis using ReFACTor...")
-    y = associations_test(meth_data, pheno, refactor.components[:,:K])
+    y = associations_test(meth_data, pheno, refactor.components[:,:k])
     plot.subplot(223)
     draw_qqplot(y=y, title='Adjusted analysis using ReFACTor', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
@@ -73,7 +77,9 @@ def run():
     plot.subplot(224)
     draw_qqplot(y=y, title='Adjusted analysis using PCA', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
-    plot.show()
+    plot.savefig("demo_results.png")
+    print("Plotted the results in demo_results.png")
+    #plot.show()
 
 # Generates a QQ-plot for a given vector of p-values.
 def draw_qqplot(y, title, xtitle, ytitle, style = 'b.'):
