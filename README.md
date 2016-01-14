@@ -35,7 +35,7 @@ you can run a demo or execute refactor with your own data
 #### Demo
 The following demo computes the ReFACTor components of a simulated example dataset and performs an EWAS.
 
-Execute directly from the command line:
+Run from command line:
 ```
 Rscript demo.R
 ```
@@ -65,7 +65,7 @@ you can run a demo or execute refactor with your own data
 #### Demo
 
 The following demo computes the ReFACTor components of a simulated example dataset and performs an EWAS.
-Execute from the command line:
+Run from command line:
 ```
 python demo.py
 ```#### Execution
