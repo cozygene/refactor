@@ -1,5 +1,5 @@
 
-if(!exists("refactor", mode="function")) source("refactor_lib.R")
+if(!exists("refactor", mode="function")) source("refactor.R")
 
 associations_test <- function(O, y, model_append)
 {
