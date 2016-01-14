@@ -46,8 +46,8 @@ refactor <- function(data_file, k, t=500, num_components=NULL, ranked_filename='
     write(t(cbind(ranked_list,cpgnames[ranked_list])),file=ranked_filename,ncol=2)
 
     print('Saving the ReFACTor components...');
-    write(t(score[,1:num_components]),file=components_filename,ncol=num_components)
-    result <- list(refactor_components=score[,1:num_components],ranked_list=ranked_list, first_pca = first_score) 
+    write(t(score[,1:num_components]), file=components_filename, ncol=num_components)
+    result <- list(refactor_components=score[,1:num_components], ranked_list=ranked_list, standard_pca=first_score) 
     return(result)
 
 }

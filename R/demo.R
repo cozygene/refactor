@@ -80,7 +80,7 @@ draw_qqplot(observed_pvalues, title='Adjusted analysis using ReFACTor', xtitle='
 
 # exp4
 print("START EXP4")
-observed_pvalues <- associations_test(O, y, output$first_pca);
+observed_pvalues <- associations_test(O, y, output$standard_pca);
 draw_qqplot(observed_pvalues, title='Adjusted analysis using PCA', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 dev.off()
