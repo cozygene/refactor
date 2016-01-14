@@ -34,23 +34,6 @@ y=args[2] # a phenotype file
 K=as.numeric(args[3]) # an integer
 R=args[4] # a matrix with k columns; these are the cell proportions)
 
-## TODO check that arguments are not NULL
-# if (data_file == NULL) {
-#     print("Running on data file: demo/demo_datafile.txt")
-#     data_file <- "demo/demo_datafile.txt"
-# }
-# if (y == NULL) {
-#     print("Running on phenotype file: demo/demo_phenotype.txt")
-#     y <- "demo/demo_phenotype.txt"
-# }
-# if (K == NULL) {
-#     print("Running on K = 5")
-#     K<-5
-# }
-# if (R == NULL) {
-#     print("Running on cellproportions file: demo/demo_cellproportions.txt")
-#     R <- "demo/demo_cellproportions.txt"
-# }  
 
 #TODO enter to funs?
     O = as.matrix(read.table(data_file))    
@@ -63,14 +46,6 @@ R=args[4] # a matrix with k columns; these are the cell proportions)
 phenotype_matrix = as.matrix(read.table(y))
 y <-  matrix(as.numeric(as.matrix(phenotype_matrix[, -1]) ))
 
-sample_id_y <- phenotype_matrix[, 1]
-
-# is there a better way? this takes time
-for (i in 1:length(sample_id_y)){
-    if (sample_id_O[i] != sample_id_y[i]) {
-        print( "ERROR IN SAMPLE ID")
-    }
-}
 
 
 png('plot.png')
