@@ -28,22 +28,29 @@ draw_qqplot <- function(y, title, xtitle, ytitle, style='.')
     abline(lm(xasix~yasix),col=2,lty=1)
 }
 
-args <- commandArgs(trailingOnly = TRUE)
-data_file=args[1] # data file
-y=args[2] # a phenotype file
-K=as.numeric(args[3]) # an integer
-R=args[4] # a matrix with k columns; these are the cell proportions)
+K = 5                                                     # the number of assumed cell types
+NUM_COMPONENTS = K                                        # number of ReFACTor components to output
+# Simulated data:
+DATA_FILE = '../demo_files/demo_datafile.txt'             # methylation levels file path
+PHENO_FILE = '../demo_files/demo_phenotype.txt'           # phenotype file path
+CELL_COMP_FILE = '../demo_files/demo_cellproportions.txt' # cell composition file path
+
+# args <- commandArgs(trailingOnly = TRUE)
+# data_file=args[1] # data file
+# y=args[2] # a phenotype file
+# K=as.numeric(args[3]) # an integer
+# R=args[4] # a matrix with k columns; these are the cell proportions)
 
 
 #TODO enter to funs?
-    O = as.matrix(read.table(data_file))    
+    O = as.matrix(read.table(DATA_FILE))    
     sample_id_O <- O[1, -1] # extract samples ID
     O <- O[-1,] # remove sample ID from matrix
     cpgnames <- O[, 1] ## set rownames
     O <- O[, -1] 
     O = t(matrix(as.numeric(O),nrow=nrow(O),ncol=ncol(O)))
 
-phenotype_matrix = as.matrix(read.table(y))
+phenotype_matrix = as.matrix(read.table(PHENO_FILE))
 y <-  matrix(as.numeric(as.matrix(phenotype_matrix[, -1]) ))
 
 
@@ -51,8 +58,10 @@ y <-  matrix(as.numeric(as.matrix(phenotype_matrix[, -1]) ))
 png('plot.png')
 par(mfrow=c(2,2))
 
+# run refactor
+output <- refactor(DATA_FILE, K)
 
-output <- refactor(data_file, K)
+# run expirements
 print("Unadjusted analysis...")
 # exp1
 print("START EXP1")
@@ -61,7 +70,7 @@ draw_qqplot(observed_pvalues, title='Unadjusted analysis', xtitle='-log10(expect
 
 # exp2
 print("START EXP2")
-observed_pvalues <- associations_test(O, y, as.matrix(read.table(R)))
+observed_pvalues <- associations_test(O, y, as.matrix(read.table(CELL_COMP_FILE)))
 draw_qqplot(observed_pvalues, title='Adjusted analysis using cell proportions', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 # exp3
