@@ -33,7 +33,7 @@ The software outputs two files:
 
 Alternatively, the refactor.R function can be executed within an R script as follows:
 
-```
+
 # <R code>
 Execute from the command line:
 ```
