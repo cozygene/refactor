@@ -66,7 +66,7 @@ def run():
 
     # Run an EWAS corrected for the first k ReFACTor components
     print("Adjusted analysis using ReFACTor...")
-    y = associations_test(meth_data, pheno, refactor.components[:,:k])
+    y = associations_test(meth_data, pheno, refactor.components[:,:K])
     plot.subplot(223)
     draw_qqplot(y=y, title='Adjusted analysis using ReFACTor', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
