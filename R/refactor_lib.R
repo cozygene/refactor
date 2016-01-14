@@ -12,7 +12,7 @@ refactor <- function(data_file, k, t=500, num_components=NULL, ranked_filename='
     O <- O[, -1] 
     O = matrix(as.numeric(O),nrow=nrow(O),ncol=ncol(O))
 
-    if (is.null(num_comp) || is.na(num_comp)) 
+    if (is.null(num_components) || is.na(num_components)) 
     {
         num_components = k
     }
