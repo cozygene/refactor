@@ -49,6 +49,8 @@ def run():
     pheno = loadtxt(PHENO_FILE, dtype = str)[:,1:].astype(float)
     pheno = pheno.reshape((meth_data.samples_size,))
    
+    fig, axes = plot.subplots(nrows=4, ncols=4)
+    fig.set_tight_layout(True)
     # Run an uncorrected EWAS
     print("Unadjusted analysis...")
     y = associations_test(meth_data, pheno)
@@ -77,9 +79,11 @@ def run():
     plot.subplot(224)
     draw_qqplot(y=y, title='Adjusted analysis using PCA', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
+    # plot.subplots_adjust(left=0.001, bottom=0.001, right=0.0011, top=0.0011)
     plot.savefig("demo_results.png")
     print("Plotted the results in demo_results.png")
-    #plot.show()
+
+    plot.show()
 
 # Generates a QQ-plot for a given vector of p-values.
 def draw_qqplot(y, title, xtitle, ytitle, style = 'b.'):
@@ -105,6 +109,7 @@ def draw_qqplot(y, title, xtitle, ytitle, style = 'b.'):
     plot.xlabel(xtitle)
     plot.ylabel(ytitle)
     plot.title(title)
+
 
 # Performs an association test for each methylation site under a linear model.
 def associations_test(meth_data, y, model_append = None):

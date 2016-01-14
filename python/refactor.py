@@ -17,14 +17,18 @@ class RefactorArgumentParser(argparse.ArgumentParser):
 def run():
       parser = RefactorArgumentParser(prog=os.path.basename(sys.argv[0]),
                                      description = "ReFACTor: Reference-Free Adjustment for Cell-Type composition",
-                                     epilog = "")
+                                     epilog = "",
+                                      add_help=False)
       required = parser.add_argument_group('required arguments')
       required.add_argument('--k',        required = True, type = int,                help = "The number of assumed cell types")
       required.add_argument('--datafile', required = True, type = str,                help = "A data matrix file of beta-normalized methylation levels; see the README file for more details")
-      parser.add_argument('--t',                         type = int, default = 500, help = "The number of sites to use for computing the ReFACTor components (DEFAULT=500)")
-      parser.add_argument('--numcomp',                   type = int,                help = "The number of ReFACTor components to output (DEFAULT=K)")
-      parser.add_argument('--out',                       type = str, default ="",   help = "changes the prefix of the output file ")
-
+      
+      optional = parser.add_argument_group('optional arguments')
+      optional.add_argument('-h', '--help', action='help')
+      optional.add_argument('--t',                         type = int, default = 500, help = "The number of sites to use for computing the ReFACTor components (DEFAULT=500)")
+      optional.add_argument('--numcomp',                   type = int,                help = "The number of ReFACTor components to output (DEFAULT=K)")
+      optional.add_argument('--out',                       type = str, default ="",   help = "changes the prefix of the output file ")
+      
       args = parser.parse_args()
       
       # load methylation data file
