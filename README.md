@@ -40,7 +40,7 @@ k = 5
 datafile = "../demo_files/demo_datafile.txt"
 num_components = 5
 t = 500
-results <- refactor(datafile,K)
+results <- refactor(datafile,k)
 RC <- results$refactor_components # Extract the ReFACTor components
 ranked_list <- results$ranked_list # Extract the list of sites ranked by ReFACTor
 ```
