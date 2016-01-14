@@ -27,11 +27,13 @@ The software outputs two files:
 1. refactor.out.components.txt - a matrix with the first several ReFACtor components for each individual
 2. refactor.out.rankedlist.txt - a ranked list of the methylation sites; from the most informative to the least informative
 
-### Execution
+### R
+To use the R version go to "R" folder (run "cd R")
+you can run a demo or execute refactor with your own data
 
-#### R
+#### Execution
 
-Alternatively, the refactor.R function can be executed within an R script as follows:
+refactor.R function can be executed within an R script as follows:
 
 ```
 # <R code>
@@ -44,7 +46,20 @@ results <- refactor(datafile,k)
 RC <- results$refactor_components # Extract the ReFACTor components
 ranked_list <- results$ranked_list # Extract the list of sites ranked by ReFACTor
 ```
-#### python
+#### Demo
+The following demo computes the ReFACTor components of a simulated example dataset and performs an EWAS.
+Execute directly from the command line:
+```
+Rscript demo.R
+```
+
+### Python
+
+To use the Python version go to "python" folder (run "cd python")
+you can run a demo or execute refactor with your own data
+
+
+#### Execution
 
 Execute from the command line:
 ```
@@ -55,19 +70,9 @@ or, if including the optional parameters:
 python refactor.py --datafile <data_file> --k <k> --t<t> --numcomp <num_components> --out <out_prefix>
 ```
 
-### Demo
+#### Demo
 
 The following demo computes the ReFACTor components of a simulated example dataset and performs an EWAS.
-
-#### R
-
-Execute directly from the command line:
-```
-Rscript demo.R
-```
-
-#### python
-
 Execute from the command line:
 ```
 python demo.py
