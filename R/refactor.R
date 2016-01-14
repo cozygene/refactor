@@ -1,5 +1,5 @@
 
-refactor <- function(data_file, K, t=500, ranked_filename='refactor.out.rankedlist.txt', components_filename='refactor.out.components.txt') {
+refactor <- function(data_file, k, t=500, num_components=NULL, ranked_filename='refactor.out.rankedlist.txt', components_filename='refactor.out.components.txt') {
 
     print('Starting ReFACTor v1.0...');
 
@@ -12,7 +12,10 @@ refactor <- function(data_file, K, t=500, ranked_filename='refactor.out.rankedli
     O <- O[, -1] 
     O = matrix(as.numeric(O),nrow=nrow(O),ncol=ncol(O))
 
-    num_components = K;
+    if (is.null(num_components))
+    {
+        num_components = k
+    }
 
     print('Running a standard PCA...')
     pcs = prcomp(scale(t(O)));
@@ -21,7 +24,7 @@ refactor <- function(data_file, K, t=500, ranked_filename='refactor.out.rankedli
     score = pcs$x
 
     print('Compute a low rank approximation of input data and rank sites...')
-    x = score[,1:K]%*%t(coeff[,1:K]);
+    x = score[,1:k]%*%t(coeff[,1:k]);
     An = scale(t(O),center=T,scale=F)
     Bn = scale(x,center=T,scale=F)
     An = t(t(An)*(1/sqrt(apply(An^2,2,sum))))
@@ -36,7 +39,7 @@ refactor <- function(data_file, K, t=500, ranked_filename='refactor.out.rankedli
     print('Compute ReFACTor components...')
     sites = ranked_list[1:t];
     pcs = prcomp(scale(t(O[sites,])));
-    first_score <- score[,1:K];
+    first_score <- score[,1:k];
     score = pcs$x
 
     print('Saving a ranked list of the data features...');

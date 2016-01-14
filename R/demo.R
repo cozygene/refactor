@@ -4,8 +4,7 @@ if(!exists("refactor", mode="function")) source("refactor.R")
 associations_test <- function(O, y, model_append)
 {
     observed_pvalues <- c()
-    m <- ncol(O)
-    for (site in 1:m)
+    for (site in 1:ncol(O))
     {
         model <- lm(y ~ O[,site] + model_append)
         
@@ -13,13 +12,21 @@ associations_test <- function(O, y, model_append)
         observed_pvalues[site] = as.numeric(pvalue)
     }
 
-    x <- runif(m)
-    x <- sort(-log10(x))
-    y <- sort(-log10(observed_pvalues))
-    result <- list(x=x,y=y) 
-    return(result) 
+    return(observed_pvalues) 
 }
 
+draw_qqplot <- function(y, title, xtitle, ytitle, style='.')
+{
+    x <- runif(length(y))
+    x <- sort(-log10(x))
+    y <- sort(-log10(y)) 
+    plot(x, y, main=title, xlab=xtitle, ylab=ytitle, pch=style, xlim=c(0,ceiling(max(x))),  ylim=c(0,ceiling(max(y))))
+    
+    # add y=x trend
+    xasix<-0:10
+    yasix<-0:10
+    abline(lm(xasix~yasix),col=2,lty=1)
+}
 
 args <- commandArgs(trailingOnly = TRUE)
 data_file=args[1] # data file
@@ -69,37 +76,28 @@ for (i in 1:length(sample_id_y)){
 png('plot.png')
 par(mfrow=c(2,2))
 
-#for printing the x=y trend
-xasix<-0:10
-yasix<-0:10
-
 
 output <- refactor(data_file, K)
-
+print("Unadjusted analysis...")
 # exp1
 print("START EXP1")
-res <- associations_test(O,y, matrix(0, nrow = nrow(O), ncol = 1))
-plot(res$x, res$y, main="original", xlab="uniform distribution", ylab="observed pvalues", pch='.', xlim=c(0,ceiling(max(res$x))),  ylim=c(0,ceiling(max(res$y))))
-abline(lm(xasix~yasix),col=2,lty=1)
-
+observed_pvalues <- associations_test(O,y, matrix(0, nrow = nrow(O), ncol = 1))
+draw_qqplot(observed_pvalues, title='Unadjusted analysis', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 # exp2
 print("START EXP2")
-res <- associations_test(O, y, as.matrix(read.table(R)))
-plot(res$x, res$y, main="R", xlab="uniform distribution", ylab="observed pvalues", pch='.', xlim=c(0,ceiling(max(res$x))),  ylim=c(0,ceiling(max(res$y))))
-abline(lm(xasix~yasix),col=2,lty=1)
+observed_pvalues <- associations_test(O, y, as.matrix(read.table(R)))
+draw_qqplot(observed_pvalues, title='Adjusted analysis using cell proportions', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 # exp3
 print("START EXP3")
-res <- associations_test(O, y, output$refactor_components[,1:K])
-plot(res$x, res$y, main="refactor", xlab="uniform distribution", ylab="observed pvalues", pch='.', xlim=c(0,ceiling(max(res$x))),  ylim=c(0,ceiling(max(res$y))))
-abline(lm(xasix~yasix),col=2,lty=1)
+observed_pvalues <- associations_test(O, y, output$refactor_components[,1:K])
+draw_qqplot(observed_pvalues, title='Adjusted analysis using ReFACTor', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 # exp4
 print("START EXP4")
-res <- associations_test(O, y, output$first_pca);
-plot(res$x, res$y, main="P", xlab="uniform distribution", ylab="observed pvalues", pch='.', xlim=c(0,ceiling(max(res$x))),  ylim=c(0,ceiling(max(res$y))))
-abline(lm(xasix~yasix),col=2,lty=1)
+observed_pvalues <- associations_test(O, y, output$first_pca);
+draw_qqplot(observed_pvalues, title='Adjusted analysis using PCA', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 dev.off()
 print("plot saved to plot.png file") #TODO move plot.png to argument
