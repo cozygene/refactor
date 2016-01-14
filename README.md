@@ -69,7 +69,8 @@ The following demo computes the ReFACTor components of a simulated example datas
 Run from command line:
 ```
 python demo.py
-```#### Execution
+```
+#### Execution
 
 Execute from the command line:
 ```
