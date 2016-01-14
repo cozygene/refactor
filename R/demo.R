@@ -53,29 +53,27 @@ y <-  matrix(as.numeric(as.matrix(phenotype_matrix[, -1]) ))
 output <- refactor(DATA_FILE, K, num_components=NUM_COMPONENTS)
 
 # run expirements
-print("Unadjusted analysis...")
-
 # init plot
 png('plot.png')
 par(mfrow=c(2,2))
 
 # exp1
-print("START EXP1")
+print("Unadjusted analysis...")
 observed_pvalues <- associations_test(O,y, matrix(0, nrow = nrow(O), ncol = 1))
 draw_qqplot(observed_pvalues, title='Unadjusted analysis', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 # exp2
-print("START EXP2")
+print("Adjusted analysis using cell proportions...")
 observed_pvalues <- associations_test(O, y, as.matrix(read.table(CELL_COMP_FILE)))
 draw_qqplot(observed_pvalues, title='Adjusted analysis using cell proportions', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 # exp3
-print("START EXP3")
+print("Adjusted analysis using ReFACTor...")
 observed_pvalues <- associations_test(O, y, output$refactor_components[,1:K])
 draw_qqplot(observed_pvalues, title='Adjusted analysis using ReFACTor', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 # exp4
-print("START EXP4")
+print("Adjusted analysis using PCA...")
 observed_pvalues <- associations_test(O, y, output$standard_pca);
 draw_qqplot(observed_pvalues, title='Adjusted analysis using PCA', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
