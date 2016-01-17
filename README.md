@@ -83,7 +83,7 @@ python demo.py
 ReFACTor expects to get Beta normalized methylation levels (although it may perform well on M-value normalized data as well). Prior to running ReFACTor, the data should be adjusted for known technical atrifacts of the technology used for probing the methylation levels as well as adjusted for known technical batches. For a comprehensive comparison between methods for preprocessing raw data collected by the Illumina 27k/450K platform see Lenhe et al. 2015, Genome Biology. In order to fit best to the assumptions of ReFACTor, any normalization applied should keep the data approximately normal.
 
 ##### Preparing data for ReFACTor
-For best performance, we suggest to remove non-autosomal probes, cross-hybridized probes and probes with SNPs. In addition, a large number of sites in the Illumina 27k/450K platform are constant or nearly-constant. Removing these sites of very low variance improves the performance of ReFACTor (e.g. remove all sites with standard deviation < 0.01).
+For best performance, we suggest to remove non-autosomal probes, cross-hybridized probes and probes with SNPs. In addition, a large number of sites in the Illumina 27k/450K platform are constant or nearly-constant. Removing these sites of very low variance improves the performance of ReFACTor (e.g. remove all sites with standard deviation < 0.02).
 
 ### Dependencies
 
