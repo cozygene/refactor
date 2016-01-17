@@ -1,5 +1,5 @@
 
-refactor <- function(data_file, k, t=500, num_components=NULL, ranked_filename='refactor.out.rankedlist.txt', components_filename='refactor.out.components.txt') {
+refactor <- function(data_file, k, t=500, numcomp=NULL, ranked_filename='refactor.out.rankedlist.txt', components_filename='refactor.out.components.txt') {
 
     print('Starting ReFACTor v1.0...');
 
@@ -12,9 +12,9 @@ refactor <- function(data_file, k, t=500, num_components=NULL, ranked_filename='
     O <- O[, -1] 
     O = matrix(as.numeric(O),nrow=nrow(O),ncol=ncol(O))
 
-    if (is.null(num_components) || is.na(num_components)) 
+    if (is.null(numcomp) || is.na(numcomp)) 
     {
-        num_components = k
+        numcomp = k
     }
     
     print('Running a standard PCA...')
@@ -46,10 +46,10 @@ refactor <- function(data_file, k, t=500, num_components=NULL, ranked_filename='
     write(t(cbind(ranked_list,cpgnames[ranked_list])),file=ranked_filename,ncol=2)
 
     print('Saving the ReFACTor components...');
-    write(t(score[,1:num_components]), file=components_filename, ncol=num_components)
+    write(t(score[,1:numcomp]), file=components_filename, ncol=numcomp)
     
     print('ReFACTor is Done');
-    result <- list(refactor_components=score[,1:num_components], ranked_list=ranked_list, standard_pca=first_score) 
+    result <- list(refactor_components=score[,1:numcomp], ranked_list=ranked_list, standard_pca=first_score) 
     return(result)
 
 }

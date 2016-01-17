@@ -50,7 +50,7 @@ y <-  matrix(as.numeric(as.matrix(phenotype_matrix[, -1]) ))
 
 
 # run refactor
-output <- refactor(DATA_FILE, K, num_components=NUM_COMPONENTS)
+output <- refactor(DATA_FILE, K, numcomp=NUM_COMPONENTS)
 
 # run expirements
 # init plot
