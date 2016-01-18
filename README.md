@@ -16,12 +16,12 @@ Dependencies for the python version are described at the end of this README file
 ReFACTor gets the following arguments as an input:
 
 Required:
-  * datafile: path to a sites by samples matrix file of beta-normalized methylation levels; the first row should contain the sample IDs and the first column should contain the CpG IDs (see demo_files/demo_datafile.txt for example). Important data preparation  instructions are described below under 'Data preparation'.
+  * datafile: path to a sites by samples matrix file of tab-delimited beta-normalized methylation levels; the first row should contain the sample IDs and the first column should contain the CpG IDs (see 'demo_files/demo_datafile.txt' for example). Important data preparation  instructions are described below under 'Data preparation'.
   * k: the number of assumed cell types; guidlines for selecting k are desribed below under 'Parameters selection'.
 
 Optional:
   * t: the number of sites to use for computing the ReFACTor components (default is 500); guidlines for selecting t are desribed below under 'Parameters selection'.
-  * numcomp: the number of ReFACTor components to output (default is same as k)
+  * numcomp: the number of ReFACTor components to output (default is the same as k)
   * out: prefix of the output files (default is 'refactor.')
 
 ### Output
@@ -33,9 +33,9 @@ The software outputs two files:
 
 ### R
 
-The refactor.R function in the "R" folder implements ReFACTor and can be executed directly from R. For example:
+The refactor.R function in the 'R' folder implements ReFACTor and can be executed directly from R. For example:
 
-```
+```R
 # <R code>
 source("refactor.R")
 k = 5
@@ -57,14 +57,14 @@ Rscript demo.R
 
 ### Python
 
-The refactor.py script in the "python" folder implements ReFACTor and can be executed from the command line as follows:
+The refactor.py script in the 'python' folder implements ReFACTor and can be executed from the command line as follows:
 
 ```
 python refactor.py --datafile <datafile> --k <k>
 ```
 or, if including the optional parameters:
 ```
-python refactor.py --datafile <data_file> --k <k> --t<t> --numcomp <numcomp> --out <out_prefix>
+python refactor.py --datafile <datafile> --k <k> --t<t> --numcomp <numcomp> --out <out_prefix>
 ```
 
 ##### Demo
@@ -78,10 +78,10 @@ python demo.py
 ### Data preparation
 
 ##### Preprocessing raw data
-ReFACTor expects to get Beta normalized methylation levels (although it may perform well on M-value normalized data as well). Prior to running ReFACTor, the data should be adjusted for known technical atrifacts of the technology used for probing the methylation levels as well as adjusted for known technical batches. For a comprehensive comparison between methods for preprocessing raw data collected by the Illumina 27k/450K platform see Lenhe et al. 2015, Genome Biology. In order to fit best to the assumptions of ReFACTor, any normalization applied should keep the data approximately normal.
+ReFACTor is designed to handle Beta normalized methylation levels (although it may perform well on M-value normalized data as well). Prior to running ReFACTor, the data should be adjusted for known technical atrifacts of the technology used for probing the methylation levels as well as adjusted for known technical covariates (such as batches). For a comprehensive comparison between methods for preprocessing raw data collected by the Illumina 27K/450K platforms see Lenhe et al. 2015 (Genome Biology). In order to best fit to the assumptions of ReFACTor, any normalization applied should keep the data approximately normal.
 
 ##### Preparing data for ReFACTor
-For best performance, we suggest to remove non-autosomal probes, cross-hybridized probes and probes with SNPs. In addition, a large number of sites in the Illumina 27k/450K platform are constant or nearly-constant. Removing these sites of very low variance improves the performance of ReFACTor (e.g. remove all sites with standard deviation < 0.02).
+For best performance, we suggest to remove non-autosomal probes, cross-hybridized probes and probes with SNPs. In addition, a large number of sites in the Illumina 27K/450K platforms are constant or nearly-constant. We observe that removing these sites of very low variance improves the performance of ReFACTor (e.g. remove all sites with standard deviation < 0.02). Note that once the ReFACTor components are computed, any of the exluded probes can be rejoined to the data for the rest of the analysis if desired.
 
 
 ### Parameters selection
@@ -94,11 +94,11 @@ The estimate_k.py script (under the 'python' folder) computes a score for each o
 
 For plotting the scores of the first several eigenvalues (starting from the second eigenvalue), run:
 ```
-python estimate_k.py --datafile <data_file>
+python estimate_k.py --datafile <datafile>
 ```
 The maximal number of eigenvalues to plot can be changed:
 ```
-python estimate_k.py --datafile <data_file> --max_k <k>
+python estimate_k.py --datafile <datafile> --max_k <k>
 ```
 
 k should be selected to be the number of eigenvalues with high scores compared with the right tail scores of the last several eigenvalues. For examples of plots generated by estimate_k.py see the files in the folder 'python/estimate_k_examples/':
@@ -112,11 +112,11 @@ The estimate_t.py script (under the 'python' folder) provides a qualitative tool
 
 Execution:
 ```
-python estimate_t.py --datafile <data_file> --k <k>
+python estimate_t.py --datafile <datafile> --k <k>
 ```
 The number of sites to plot can be changed:
 ```
-python estimate_t.py --datafile <data_file> --k <k> --numsites <num_sites>
+python estimate_t.py --datafile <datafile> --k <k> --numsites <num_sites>
 ```
 
 t should be selected as the number of sites after which the signal dramatically decays. For examples of plots generated by estimate_t.py see the files in the folder 'python/estimate_t_examples/':
