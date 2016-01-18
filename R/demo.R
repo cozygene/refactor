@@ -17,7 +17,8 @@ associations_test <- function(O, y, model_append)
 
 draw_qqplot <- function(y, title, xtitle, ytitle, style='.')
 {
-    x <- runif(length(y))
+    #x <- runif(length(y))
+    x <- seq(1/length(y),1,by = 1/length(y))
     x <- sort(-log10(x))
     y <- sort(-log10(y)) 
     plot(x, y, main=title, xlab=xtitle, ylab=ytitle, pch=style, xlim=c(0,ceiling(max(x))),  ylim=c(0,ceiling(max(y))))
@@ -54,7 +55,8 @@ output <- refactor(DATA_FILE, K, numcomp=NUM_COMPONENTS)
 
 # run expirements
 # init plot
-png('plot.png')
+filename <- 'demo_results.png'
+png(filename)
 par(mfrow=c(2,2))
 
 # exp1
@@ -78,7 +80,7 @@ observed_pvalues <- associations_test(O, y, output$standard_pca);
 draw_qqplot(observed_pvalues, title='Adjusted analysis using PCA', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 dev.off()
-print("plot saved to plot.png file") #TODO move plot.png to argument
-                                     #TODO change plot.png by time and date
-system("open plot.png")
+print(paste("plot saved to", filename))
+
+system(paste("open", filename))
 

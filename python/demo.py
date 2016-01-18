@@ -16,7 +16,7 @@ The results of the EWAS are saved into a file (demo_results.png), showing that u
 
 """
 
-from numpy import zeros, loadtxt, random, log10, column_stack, ones
+from numpy import zeros, loadtxt, random, log10, column_stack, ones, linspace
 import matplotlib.pyplot as plot
 from scipy import stats
 from methylation_data import MethylationData
@@ -59,7 +59,7 @@ def run():
     plot.subplot(221)
     draw_qqplot(y=y, title='Unadjusted analysis', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
-
+    
     # Run an EWAS corrected for the true cell proportions
     print("Adjusted analysis using cell proportions...")
     R = loadtxt(CELL_COMP_FILE, dtype = float)
@@ -80,18 +80,22 @@ def run():
     y = associations_test(meth_data, pheno, refactor.standard_pca)
     plot.subplot(224)
     draw_qqplot(y=y, title='Adjusted analysis using PCA', xtitle='-log10(expected)', ytitle='-log10(observed)')
-
+    
     plot.savefig("demo_results.png")
-    print("Plotted the results in demo_results.png")
+    print("Plotted and saved the results into demo_results.png")
 
     # plot.show()
 
 # Generates a QQ-plot for a given vector of p-values.
 def draw_qqplot(y, title, xtitle, ytitle, style = 'b.'):
     # x
-    unif = random.uniform(size=len(y))
-    x = -log10(unif)
+    #unif = random.uniform(size=len(y))
+    #x = -log10(unif)
+    #x.sort()
+    x = -log10(linspace(0,1,len(y)+1))
+    x = x[1:]
     x.sort()
+
 
     # y
     y = -log10(y)

@@ -3,6 +3,8 @@ import sys
 from sklearn import preprocessing
 from numpy import dot, linalg, sqrt, loadtxt
 import pca
+import matplotlib.pyplot as plot
+from numpy import dot, linalg, sqrt, loadtxt, linalg, log
 
 class Refactor( object ):
     RANKED_FILENAME =       'refactor.out.rankedlist.txt'
@@ -123,3 +125,65 @@ class Refactor( object ):
     def _terminate_refactor(self):
         print("ReFACTor was terminated.")
         exit(2)
+
+
+    @staticmethod
+    def estimate_k(methylation_data, max_k):
+
+        min_k = 2
+
+        # Find the eigenvalues of the covariance matrix
+        eigs = sorted(linalg.eigvals(dot(methylation_data.data.transpose(),methylation_data.data)),key=lambda x: -x)
+
+        # For each eigenvalue i compute its score: -log of the ratio between the i-th eigenvalue and the (i-1)-th eigenvalue.
+        scores = [0 for i in range(max_k-min_k+1)]
+        counter = 0
+        for i in range(min_k,max_k):
+            scores[counter] = -log(eigs[i-1] / eigs[i-2])
+            counter += 1
+
+        # Plot #eigenvalue vs. scores
+        fig, axes = plot.subplots(nrows=1, ncols=1)
+        plot.plot([i for i in range(min_k,max_k+1)], scores)
+        plot.xlabel('# eigenvalue')
+        plot.ylabel('score')
+        filename = "estimate_k_results.png"
+        plot.savefig(filename)
+        print("Plotted and saved the results into %s" % filename)
+
+
+    @staticmethod
+    def estimate_t(methylation_data, k, numsites):
+
+        span = 9 # parameter for the moving average (the window size for constructing the average); must be an even number.
+
+        # Compute a low rank approximation of the data
+        pca_res = pca.PCA(methylation_data.data.transpose()) 
+        x = dot(pca_res.P[:,0:k], pca_res.U[:,0:k].transpose())        
+        
+        # Compute the distance of each site form its low rank approximation
+        An = preprocessing.StandardScaler( with_mean = True, with_std = False ).fit(methylation_data.data.transpose()).transform(methylation_data.data.transpose())
+        Bn = preprocessing.StandardScaler( with_mean = True, with_std = False ).fit(x).transform(x)
+        An = An * ( 1 / sqrt((An**2).sum(axis=0)) ) 
+        Bn = Bn * ( 1 / sqrt((Bn**2).sum(axis=0)) )
+        distances = sorted(sqrt(((An - Bn)**2).sum(axis=0)))
+
+        # Compute a score for each site i of the sorted distances list: the moving average of dist(i) - dist(i-1)
+        distances_diff = [distances[0]] + [distances[i] - distances[i-1] for i in range(1,numsites)]
+
+        scores = [0 for i in range(numsites)]
+        mid = (span-1) / 2        
+        for i in range(0,numsites):
+            l = [distances_diff[j] for j in range(min(0,i-mid),min(i+mid,numsites))]
+            scores[i] = sum(l) / float(len(l))
+        
+        # Plot sites vs. scores
+        fig, axes = plot.subplots(nrows=1, ncols=1)
+        plot.plot([i for i in range(1,numsites+1)], scores)
+        plot.xlabel('site')
+        plot.ylabel('score')
+        filename = "estimate_t_results.png"
+        plot.savefig(filename)
+        print("Plotted and saved the results into %s" % filename)
+        
+
