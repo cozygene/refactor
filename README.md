@@ -34,7 +34,7 @@ The software outputs two files:
 1. refactor.out.components.txt - a matrix with the first numcomp ReFACTor components for each individual
 2. refactor.out.rankedlist.txt - a ranked list of the methylation sites; from the most informative to the least informative
 
-Note that the prefix of these files ('refactor') can be changed using the 'out' argument.
+Note that the default prefix of these files ('refactor') can be changed using the 'out' argument.
 
 ### R
 
@@ -68,7 +68,7 @@ The refactor.py script in the 'python' folder implements ReFACTor and can be exe
 ```
 python refactor.py --datafile <datafile> --k <k>
 ```
-or, if including one or more of the optional parameters:
+or, if including one or more of the optional arguments:
 ```
 python refactor.py --datafile <datafile> --k <k> --covarfile <covarfile> --t <t> --numcomp <numcomp> --stdth <stdth> --out <out>
 ```
@@ -92,7 +92,13 @@ In addition, we suggest to use the following optional arguments:
   * 'covarfile' - Adjusting the data, before running ReFACTor, for technical covariates such as batchs can be crutial in some cases. In addition, we observe that adjusting the methylation levels for genome-wide affecting factors, such as gender, smoking and global ancestry, improves the performance of ReFACTor. However, We do not suggest to adjust the data for covariates that are correlated with the cell composition such as age before running ReFACTor (these covariates should be accounted for after running ReFACTor). The 'covarfile' argument allows to adjust the data for covariates before running ReFACTor.
   * 'stdth' - a large number of sites in the Illumina 27K/450K platforms are constant or nearly-constant. We observe that removing sites of very low variance improves the performance of ReFACTor.
 
-We note that the current version of ReFACTor does not handle missing values. If missing values exist in the data they should be assigned with values before running ReFACTor (e.g. for each site its missings values can be assigned with the mean value of the site, across all smaples with no missing values).
+For best performance, we suggest to take the following steps when preparing the data for ReFACTor:
+  * Exclude problematic probes - remove non-autosomal probes, cross-hybridized probes and probes with SNPs. Note that once the ReFACTor components are computed, any of the exluded probes can be rejoined to the data for the rest of the analysis.
+  * Adjust the data for covariates - adjusting the methylation levels, before running ReFACTor, for known technical covariates such as batchs can be crutial in some cases. In addition, we observe that adjusting the methylation levels for genome-wide affecting factors, such as gender, smoking and global ancestry, improves the performance of ReFACTor. We do not suggest to adjust the data for covariates that are correlated with the cell type composition, such as age, before running ReFACTor (these covariates should be accounted for after running ReFACTor). The 'covarfile' optional argument allows to adjust the data for covariates before running ReFACTor.
+
+Additional remarks:
+  * A large number of sites in the Illumina 27K/450K platforms are constant or nearly-constant. We observe that removing sites of very low variance improves the performance of ReFACTor (defined by the 'stdth' argument; the default value should be sufficient in  most cases).
+  * The current version of ReFACTor does not handle missing values. If missing values exist in the data they should be assigned with values before running ReFACTor (e.g. for each site its missings values can be assigned with the mean value of the site - across all smaples with no missing values).
 
 ### Parameters selection
 
