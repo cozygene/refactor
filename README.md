@@ -87,8 +87,12 @@ python demo.py
 ReFACTor is designed to handle Beta normalized methylation levels (although it may perform well on M-value normalized data as well). Prior to running ReFACTor, the data should be adjusted for known technical atrifacts of the technology used for probing the methylation levels as well as adjusted for known technical covariates (such as batches). For a comprehensive comparison between methods for preprocessing raw data collected by the Illumina 27K/450K platforms see [Lenhe et al. 2015](http://www.genomebiology.com/2015/16/1/37). In order to best fit to the assumptions of ReFACTor, any normalization applied should keep the data approximately normal.
 
 ##### Preparing data for ReFACTor
-For best performance, we suggest to remove non-autosomal probes, cross-hybridized probes and probes with SNPs. In addition, a large number of sites in the Illumina 27K/450K platforms are constant or nearly-constant. We observe that removing these sites of very low variance improves the performance of ReFACTor (e.g. remove all sites with standard deviation < 0.02). Note that once the ReFACTor components are computed, any of the exluded probes can be rejoined to the data for the rest of the analysis.
+For best performance, we suggest to remove non-autosomal probes, cross-hybridized probes and probes with SNPs. Note that once the ReFACTor components are computed, any of the exluded probes can be rejoined to the data for the rest of the analysis.
+In addition, we suggest to use the following optional arguments:
+  * 'covarfile' - Adjusting the data, before running ReFACTor, for technical covariates such as batchs can be crutial in some cases. In addition, we observe that adjusting the methylation levels for genome-wide affecting factors, such as gender, smoking and global ancestry, improves the performance of ReFACTor. However, We do not suggest to adjust the data for covariates that are correlated with the cell composition such as age before running ReFACTor (these covariates should be accounted for after running ReFACTor). The 'covarfile' argument allows to adjust the data for covariates before running ReFACTor.
+  * 'stdth' - a large number of sites in the Illumina 27K/450K platforms are constant or nearly-constant. We observe that removing sites of very low variance improves the performance of ReFACTor.
 
+We note that the current version of ReFACTor does not handle missing values. If missing values exist in the data they should be assigned with values before running ReFACTor (e.g. for each site its missings values can be assigned with the mean value of the site, across all smaples with no missing values).
 
 ### Parameters selection
 
