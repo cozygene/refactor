@@ -25,25 +25,18 @@ import statsmodels.api as sm
 
 
 K = 5                                                     # the number of assumed cell types
-NUM_COMPONENTS = K                                        # number of ReFACTor components to output
 # Simulated data:
 DATA_FILE = '../demo_files/demo_datafile.txt'             # methylation levels file path
 PHENO_FILE = '../demo_files/demo_phenotype.txt'           # phenotype file path
 CELL_COMP_FILE = '../demo_files/demo_cellproportions.txt' # cell composition file path
 
-
 def run():
 
-    # read methylation data
-    meth_data = MethylationData(datafile = DATA_FILE)
-
     # Run ReFACTor
-    refactor  = refactor_lib.Refactor(methylation_data = meth_data, 
-                                      k = K,
-                                      t = 500, 
-                                      num_components = NUM_COMPONENTS, 
-                                      ranked_output_filename = "demo_refactor.out.rankedlist.txt", 
-                                      components_output_filename  = "demo_refactor.out.components.txt")
+    refactor  = refactor_lib.Refactor(DATA_FILE, K, out="demo_refactor")
+
+    # read methylation data
+    meth_data = MethylationData(DATA_FILE)
 
     # Read the phenotype file
     pheno = loadtxt(PHENO_FILE, dtype = str)[:,1:].astype(float)

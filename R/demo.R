@@ -30,7 +30,6 @@ draw_qqplot <- function(y, title, xtitle, ytitle, style='.')
 }
 
 K = 5                                                     # the number of assumed cell types
-NUM_COMPONENTS = K                                        # number of ReFACTor components to output
 # Simulated data:
 DATA_FILE = '../demo_files/demo_datafile.txt'             # methylation levels file path
 PHENO_FILE = '../demo_files/demo_phenotype.txt'           # phenotype file path
@@ -51,7 +50,7 @@ y <-  matrix(as.numeric(as.matrix(phenotype_matrix[, -1]) ))
 
 
 # run refactor
-output <- refactor(DATA_FILE, K, numcomp=NUM_COMPONENTS)
+output <- refactor(DATA_FILE, K, out = "demo_refactor")
 
 # run expirements
 # init plot

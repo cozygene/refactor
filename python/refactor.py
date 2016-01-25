@@ -25,21 +25,21 @@ def run():
       
       optional = parser.add_argument_group('optional arguments')
       optional.add_argument('-h', '--help', action='help')
+      optional.add_argument('--covarfile',                       type = str,   help = "A covariates file; see the README file for more details")
       optional.add_argument('--t',                         type = int, default = 500, help = "The number of sites to use for computing the ReFACTor components (DEFAULT=500)")
       optional.add_argument('--numcomp',                   type = int,                help = "The number of ReFACTor components to output (DEFAULT=K)")
-      optional.add_argument('--out',                       type = str, default ="",   help = "changes the prefix of the output file ")
+      optional.add_argument('--stdth',                   type = float, default = 0.02, help = "The standard deviation threshold for excluding low variance sites (DEFAULT=0.02)")
+      optional.add_argument('--out',                       type = str, default ="refactor",   help = "Changes the prefix of the output files (DEFAULT='refactor')")
       
       args = parser.parse_args()
-      
-      # load methylation data file
-      meth_data = MethylationData(datafile = args.datafile)
-      
-      return Refactor(methylation_data = meth_data, 
+
+      return Refactor(datafile = args.datafile, 
                                 k = args.k, 
+                                covarfile = args.covarfile,
                                 t = args.t, 
-                                num_components = args.numcomp, 
-                                ranked_output_filename = args.out + Refactor.RANKED_FILENAME, 
-                                components_output_filename  = args.out + Refactor.COMPONENTS_FILENAME)
+                                num_components = args.numcomp,
+                                stdth = args.stdth,
+                                out = args.out)
 
 
 if __name__ == "__main__":

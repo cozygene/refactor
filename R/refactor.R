@@ -1,5 +1,8 @@
 
-refactor <- function(data_file, k, t=500, numcomp=NULL, ranked_filename='refactor.out.rankedlist.txt', components_filename='refactor.out.components.txt') {
+refactor <- function(data_file, k, covarfile = NULL, t = 500, numcomp = NULL, stdth = 0.02, out = "refactor") {
+
+    ranked_filename = paste(out, ".out.rankedlist.txt", sep="")
+    components_filename = paste(out, ".out.components.txt", sep="")
 
     print('Starting ReFACTor v1.0...');
 
@@ -12,11 +15,44 @@ refactor <- function(data_file, k, t=500, numcomp=NULL, ranked_filename='refacto
     O <- O[, -1] 
     O = matrix(as.numeric(O),nrow=nrow(O),ncol=ncol(O))
 
+    print(paste("Excluding sites with low variance (std < ", stdth, ")..."), sep="")
+    sds = apply(t(O), 2, sd)
+    m_before = length(sds)
+    include = which(sds >= stdth)
+    O = O[include,]
+    cpgnames = cpgnames[include]
+    print(paste((m_before - length(which(sds >= stdth))), " sites were excluded due to low variance...", sep=""))
+
     if (is.null(numcomp) || is.na(numcomp)) 
     {
         numcomp = k
     }
-    
+
+    # Adjust the data for the covariates
+    if (!is.null(covarfile))
+    {
+        covs = as.matrix(read.table(covarfile))
+        sample_id2 <- covs[, 1]
+        if (!all(sample_id == sample_id2)){
+            print("ERROR: The order of the samples in the covariates file must be the same as the order in the data file")
+            quit()
+        }
+        covs <- covs[,-1]
+        if (length(covs) > dim(O)[2])
+        {
+            covs = matrix(as.numeric(covs),nrow=nrow(covs),ncol=ncol(covs))
+        }else{
+            covs = as.numeric(covs)
+        }    
+        O_adj = O
+        for (site in 1:nrow(O))
+        {
+            model <- lm(O[site,] ~  covs)
+            O_adj[site,] = residuals(model)
+        }
+        O = O_adj
+    }
+
     print('Running a standard PCA...')
     pcs = prcomp(scale(t(O)));
 
@@ -43,7 +79,8 @@ refactor <- function(data_file, k, t=500, numcomp=NULL, ranked_filename='refacto
     score = pcs$x
 
     print('Saving a ranked list of the data features...');
-    write(t(cbind(ranked_list,cpgnames[ranked_list])),file=ranked_filename,ncol=2)
+    write(t(cpgnames[ranked_list]),file=ranked_filename,ncol=1)
+    #write(t(cbind(ranked_list,cpgnames[ranked_list])),file=ranked_filename,ncol=2)
 
     print('Saving the ReFACTor components...');
     write(t(score[,1:numcomp]), file=components_filename, ncol=numcomp)
