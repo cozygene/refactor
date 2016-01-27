@@ -100,7 +100,7 @@ Additional remarks:
 
 The manuscript describing ReFACTor demonstrates that the algorithm is robust to the selection of the parameters k and t in simulated and real data. However, sometimes even an approximation of k is not available, and the default value of t (t=500) may not be adequate in some cases. Therefore, we provide the following tools for guiding the parameters selection. These tools are available in the Python version only.
 
-##### Selecting k
+##### Selecting k (the number of assumed cell types)
 
 The estimate_k.py script (under the 'python' folder) computes a score for each of the first several eigenvalues of the covariance matrix of the input data. The score of the i-th eigenvalue is defined to be -log of the ratio between the i-th eigenvalue to the (i-1)-th eigenvalue, thus a high score of a specific eigenvalue suggests its eigenvector as a substantial variance component in the data (compared with the previous one). The ratio between adjacent eigenvalues, as well as other test statistics of the eigenvalues, is desribed by [Peres-Neto et al. (2005)](http://labs.eeb.utoronto.ca/jackson/computational%20statistics%20and%20data%20analysis.pdf) as a method for determining the number of non-trivial axes of variance in data.
 
@@ -126,7 +126,7 @@ k should be selected to be the number of high score eigenvalues, before reaching
 
 
 
-##### Selecting t
+##### Selecting t (the number of sites to use for computing ReFACTor's components)
 
 The estimate_t.py script (under the 'python' folder) provides a qualitative tool for assesing the number of features in the data that are highly informative in terms of the main structure of the data. The script first follows the ReFACTor algorithm in order to find the distance of each site from its low-rank approximation. Then, the sites are sorted by their distance, and a score for site i in the sorted list is defined to be the difference between the distance of the i-th site and the distance of the (i-1)-th site. Finally, the scores of the first several thousands of sites are plotted (using moving average for smoothing the signal), thus providing a qualitative way to get the number of highly informative sites.
 
