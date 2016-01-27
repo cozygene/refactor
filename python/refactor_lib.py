@@ -42,20 +42,6 @@ class Refactor( object ):
             print("ERROR: The file '%s' doesn't exist. Exiting" % filepath)
             self._terminate_refactor()
 
-    def _load_and_validate_file_of_dimentions(self, filepath, dim):
-        if filepath is None:
-            return None
-
-        self._validate_file_path(filepath)
-        print("Loading file %s..." % filepath)
-        data = loadtxt(filepath, dtype = str)
-
-        if len(data.shape) != dim:
-            print("ERROR: The file '%s' is not a %sd matrix" % (filepath, dim))
-            self._terminate_refactor()
-
-        return data
-
     def _validate_k(self,k):
         if not (k >= 2 and k <= self.meth_data.samples_size):
             print("ERROR: k must be at least 2 and smaller than the number of samples. k = %s, samples = %s" % (k, self.meth_data.samples_size))
@@ -104,7 +90,7 @@ class Refactor( object ):
 
         print('Starting ReFACTor v%s...' % self.VERSION);
         self.components, self.ranked_sites, self.standard_pca = self._refactor()
-        print('ReFACTor is Done!')
+        print('ReFACTor is done!')
 
    
     def _write_file( self, filepath, data):   

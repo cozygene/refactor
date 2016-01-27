@@ -9,7 +9,7 @@ COMPRESSED_FILENAME = "methylation_data"
 class MethylationData( object ):
 
     def __init__(self, datafile):
-        data = self._load_and_validate_file_of_dimentions(datafile, 2) 
+        data = self._load_and_validate_file_of_dimensions(datafile, 2) 
         self.samples_ids = data[0,:][1:]                 # extract samples ID
         self.cpgnames = data[:,0][1:]                    # extract methylation sites names
 
@@ -22,7 +22,7 @@ class MethylationData( object ):
             print("ERROR: The file '%s' doesn't exist. Exiting" % filepath)
             sys.exit(2)
 
-    def _load_and_validate_file_of_dimentions(self, filepath, dim):
+    def _load_and_validate_file_of_dimensions(self, filepath, dim):
         """
         validates that a file exists and that it is a matrix from dimentions dim.
         """
