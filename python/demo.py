@@ -19,8 +19,8 @@ The results of the EWAS are saved into a file (demo_results.png), showing that u
 from numpy import zeros, loadtxt, random, log10, column_stack, ones, linspace
 import matplotlib.pyplot as plot
 from scipy import stats
-from methylation_data import MethylationData
-import refactor_lib
+from refactor_lib import methylation_data
+from refactor_lib import refactor
 import statsmodels.api as sm
 
 
@@ -33,10 +33,10 @@ CELL_COMP_FILE = '../demo_files/demo_cellproportions.txt' # cell composition fil
 def run():
 
     # Run ReFACTor
-    refactor  = refactor_lib.Refactor(DATA_FILE, K, out="demo_refactor")
+    refactor_obj  = refactor.Refactor(DATA_FILE, K, out="demo_refactor")
 
     # read methylation data
-    meth_data = MethylationData(DATA_FILE)
+    meth_data = methylation_data.MethylationData(DATA_FILE)
 
     # Read the phenotype file
     pheno = loadtxt(PHENO_FILE, dtype = str)[:,1:].astype(float)
@@ -63,14 +63,14 @@ def run():
 
     # Run an EWAS corrected for the first k ReFACTor components
     print("Adjusted analysis using ReFACTor...")
-    y = associations_test(meth_data, pheno, refactor.components[:,:K])
+    y = associations_test(meth_data, pheno, refactor_obj.components[:,:K])
     plot.subplot(223)
     draw_qqplot(y=y, title='Adjusted analysis using ReFACTor', xtitle='-log10(expected)', ytitle='-log10(observed)')
 
 
     # Run an EWAS corrected for the first PCs of a standard PCA
     print("Adjusted analysis using PCA...")
-    y = associations_test(meth_data, pheno, refactor.standard_pca)
+    y = associations_test(meth_data, pheno, refactor_obj.standard_pca)
     plot.subplot(224)
     draw_qqplot(y=y, title='Adjusted analysis using PCA', xtitle='-log10(expected)', ytitle='-log10(observed)')
     

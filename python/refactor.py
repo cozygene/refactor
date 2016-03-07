@@ -1,8 +1,9 @@
+#!/usr/bin/env python
+
 import os
 import sys
 import argparse
-from refactor_lib import Refactor
-from methylation_data import MethylationData
+from refactor_lib import refactor
 
 REFACTOR_FORMATTED_EXTENSION = ".refactor"
 
@@ -33,7 +34,7 @@ def run():
       
       args = parser.parse_args()
 
-      return Refactor(datafile = args.datafile, 
+      return refactor.Refactor(datafile = args.datafile, 
                                 k = args.k, 
                                 covarfile = args.covarfile,
                                 t = args.t, 
