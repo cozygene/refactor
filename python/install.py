@@ -2,10 +2,22 @@
 
 import os
 import sys
+from setuptools import setup
 
 REFACTOR_OBLIGATORY_DEPENDENCIES = ['numpy', 'scipy', 'sklearn']
 REFACTOR_OPTIONAL_DEPENDENCIES = ['matplotlib','statsmodels'] # for demo only
 
+def setup():
+    setup(name='refactor',
+        version='1.0',
+        description='',
+        url='https://github.com/cozygene/refactor',
+        packages=['refactor_lib'],
+        scripts=['refactor.py'], 
+        #install_requires=[], # leave this commented out.declaring dependencies that are already install can cause problems
+        include_package_data=True,
+        zip_safe=False,
+)
 
 def run_function_without_prints(func):
     """
@@ -121,6 +133,7 @@ def check_dependencies(dependencies_list):
 
     return dependencies_to_install
 
+
 def install_refactor():
     """
     runs setup.py script to put refactor in PATH
@@ -128,7 +141,7 @@ def install_refactor():
     """
 
     print "Installing ReFACTOR..."
-    os.system("cd python; python setup.py install")
+    setup()
     
     # install dependencies
     dependencies_to_install = check_dependencies(REFACTOR_OBLIGATORY_DEPENDENCIES + REFACTOR_OPTIONAL_DEPENDENCIES)
