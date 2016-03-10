@@ -7,7 +7,10 @@ from setuptools import setup
 REFACTOR_OBLIGATORY_DEPENDENCIES = ['numpy', 'scipy', 'sklearn']
 REFACTOR_OPTIONAL_DEPENDENCIES = ['matplotlib','statsmodels'] # for demo only
 
-def setup():
+def setup_refactor():
+    # add "install" command for the setup script. "mimic" user choice: setup install 
+    sys.argv.append("install")
+    print sys.argv
     setup(name='refactor',
         version='1.0',
         description='',
@@ -141,7 +144,7 @@ def install_refactor():
     """
 
     print "Installing ReFACTOR..."
-    setup()
+    setup_refactor()
     
     # install dependencies
     dependencies_to_install = check_dependencies(REFACTOR_OBLIGATORY_DEPENDENCIES + REFACTOR_OPTIONAL_DEPENDENCIES)
@@ -175,5 +178,6 @@ if __name__ == '__main__':
         # the next line replaces the currently-running process with the sudo
         os.execlpe('sudo', *args)
 
+    
     install_refactor()
 	
