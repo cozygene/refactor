@@ -1,4 +1,3 @@
-include README.md
 include demo_files/*
 include python/estimate_k_examples/*
 include python/estimate_t_examples/*
