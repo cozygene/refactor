@@ -155,7 +155,7 @@ def load_pip():
         import pip
         global pip
         return True
-    except Exception, e:
+    except Exception as e:
         return False
 
 def install(module_name):
@@ -188,7 +188,7 @@ def already_installed(module_name):
         return True
 
     # if __import__ excepts - module is not installled
-    except Exception, e:
+    except Exception as e:
         return False
 
 def user_installation_confirmation(modules):
@@ -212,7 +212,7 @@ def check_dependencies(dependencies_list):
     dependencies_to_install = []
 
     # check if deoendencies are installed
-    print "Checking if dependencies are installed..."
+    print("Checking if dependencies are installed...")
     for module in dependencies_list:
         if not already_installed(module):
             dependencies_to_install.append(module)
@@ -221,7 +221,7 @@ def check_dependencies(dependencies_list):
     if len(dependencies_to_install) > 0:
         if user_installation_confirmation(dependencies_to_install):
             if not load_pip():
-                print "pip (installation package) wasn't found. Can't install dependencies"
+                print("pip (installation package) wasn't found. Can't install dependencies")
             else:
                 dependencies_to_install = [module for module in dependencies_to_install if install(module) == False]
 
@@ -234,7 +234,7 @@ def install_refactor():
     installes dependencies if they arn't already installed
     """
 
-    print "Installing ReFACTOR..."
+    print("Installing ReFACTor...")
     setup_refactor()
     
     # install dependencies
