@@ -90,10 +90,10 @@ ReFACTor is designed to handle Beta normalized methylation levels (although it m
 For best performance, we suggest to take the following steps when preparing the data for ReFACTor:
   * Exclude problematic probes - remove non-autosomal probes, cross-hybridized probes and probes with SNPs. Note that once the ReFACTor components are computed, any of the exluded probes can be rejoined to the data for the rest of the analysis.
   * Exclude outlier samples - outliers can be revealed using dimensionality reduction methods such as PCA or multidimensional scaling (MDS).
-  * Adjust the data for covariates - adjusting the methylation levels, before running ReFACTor, for known technical covariates such as batchs can be crutial in some cases. In addition, we observe that adjusting the methylation levels for genome-wide affecting factors, such as gender, smoking and global ancestry, improves the performance of ReFACTor. We do not suggest to adjust the data for covariates that are correlated with the cell type composition, such as age, before running ReFACTor (these covariates should be accounted for after running ReFACTor). The 'covarfile' optional argument allows to adjust the data for covariates before running ReFACTor.
+  * Adjust the data for covariates - adjusting the methylation levels, before running ReFACTor, for known technical covariates such as batch information can be crutial in some cases. In addition, we observe that adjusting the methylation levels for genome-wide affecting factors, such as gender, smoking status and global ancestry, improves the performance of ReFACTor. However, we do not suggest to adjust the data for covariates that are correlated with the cell type composition, such as age, before running ReFACTor (these covariates should be accounted for after running ReFACTor). The 'covarfile' optional argument allows to adjust the data for covariates before running ReFACTor.
 
 Additional remarks:
-  * A large number of sites in the Illumina 27K/450K platforms are constant or nearly-constant. We observe that removing sites of very low variance improves the performance of ReFACTor (defined by the 'stdth' argument; the default value should be sufficient in  most cases).
+  * Many sites in the Illumina 27K/450K platforms are constant or nearly-constant. We observe that removing sites with very low variance improves the performance of ReFACTor (defined by the 'stdth' argument; the default value should be sufficient in  most cases).
   * The current version of ReFACTor does not handle missing values. If missing values exist in the data they should be assigned with values before running ReFACTor (e.g. for each site its missings values can be assigned with the mean value of the site - across all smaples with no missing values).
 
 ### Parameters selection
@@ -102,13 +102,13 @@ The manuscript describing ReFACTor demonstrates that the algorithm is robust to 
 
 ##### Selecting k (the number of assumed cell types)
 
-The estimate_k.py script (under the 'python' folder) computes a score for each of the first several eigenvalues of the covariance matrix of the input data. The score of the i-th eigenvalue is defined to be -log of the ratio between the i-th eigenvalue to the (i-1)-th eigenvalue, thus a high score of a specific eigenvalue suggests its eigenvector as a substantial variance component in the data (compared with the previous one). The ratio between adjacent eigenvalues, as well as other test statistics of the eigenvalues, is desribed by <a href="http://labs.eeb.utoronto.ca/jackson/computational%20statistics%20and%20data%20analysis.pdf" target="_blank">Peres-Neto et al.</a> as a method for determining the number of non-trivial axes of variance in data.
+The estimate_k.py script (under the 'python' folder) computes a score for each of the first several eigenvalues of the empirical covariance matrix of the input data. The score of the i-th eigenvalue is defined to be -log of the ratio between the i-th eigenvalue to the (i-1)-th eigenvalue, thus a high score of a specific eigenvalue suggests its eigenvector as a substantial variance component in the data (compared with the previous one). The ratio between adjacent eigenvalues, as well as other test statistics of the eigenvalues, is desribed by <a href="http://labs.eeb.utoronto.ca/jackson/computational%20statistics%20and%20data%20analysis.pdf" target="_blank">Peres-Neto et al.</a> as a method for determining the number of non-trivial axes of variance in data.
 
 For plotting the scores of the first several eigenvalues (starting from the second eigenvalue), run:
 ```
 python estimate_k.py --datafile <datafile>
 ```
-The maximal number of eigenvalues to plot can be changed:
+The maximal number of eigenvalues in the plot can be changed:
 ```
 python estimate_k.py --datafile <datafile> --max_k <max_k>
 ```
@@ -128,13 +128,13 @@ k should be selected to be the number of high score eigenvalues, before reaching
 
 ##### Selecting t (the number of sites to use for computing ReFACTor's components)
 
-The estimate_t.py script (under the 'python' folder) provides a qualitative tool for assesing the number of features in the data that are highly informative in terms of the main structure of the data. The script first follows the ReFACTor algorithm in order to find the distance of each site from its low-rank approximation. Then, the sites are sorted by their distance, and a score for site i in the sorted list is defined to be the difference between the distance of the i-th site and the distance of the (i-1)-th site. Finally, the scores of the first several thousands of sites are plotted (using moving average for smoothing the signal), thus providing a qualitative way to get the number of highly informative sites.
+The estimate_t.py script (under the 'python' folder) provides a qualitative tool for assesing the number of features in the data that are highly informative in terms of the main structure in the data. The script first follows the ReFACTor algorithm in order to find the distance of each site from its k-rank approximation. Then, the sites are sorted by their distance, and a score for site i in the sorted list is defined to be the difference between the distance of the i-th site and the distance of the (i-1)-th site. Finally, the scores of the first several thousands of sites are plotted (using moving average for smoothing the signal), thus providing a qualitative way to get the number of highly informative sites.
 
 Execution:
 ```
 python estimate_t.py --datafile <datafile> --k <k>
 ```
-The number of sites to plot can be changed:
+The number of sites in the plot can be changed:
 ```
 python estimate_t.py --datafile <datafile> --k <k> --numsites <num_sites>
 ```
@@ -153,7 +153,7 @@ t should be selected to be the number of sites after which the signal dramatical
 
 
 
-### Dependencies
+### Dependencies (Python version)
 
 For the Python version of ReFACTor we recommend using <a href="https://www.continuum.io/downloads" target="_blank">Anaconda Python version 2.7</a>, which already includes all necessary dependencies.
 
