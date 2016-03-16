@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 from refactor_lib import methylation_data
-from refactor_lib import refactor
+from refactor_lib import refactor_lib
 
 
 class tEstimateArgumentParser(argparse.ArgumentParser):
@@ -36,7 +36,7 @@ def run():
             print("numsites must be greater than 0")
             sys.exit(2)
 
-        refactor.Refactor.estimate_t(methylation_data = meth_data, k = args.k, numsites = args.numsites)
+        refactor_lib.Refactor.estimate_t(methylation_data = meth_data, k = args.k, numsites = args.numsites)
         
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 from refactor_lib import methylation_data
-from refactor_lib import refactor
+from refactor_lib import refactor_lib
 
 
 class kEstimateArgumentParser(argparse.ArgumentParser):
@@ -33,7 +33,7 @@ def run():
             print("max_k must be greater than 2 and smaller than the number of samples")
             sys.exit(2)
         
-        refactor.Refactor.estimate_k(methylation_data = meth_data, max_k = args.max_k)
+        refactor_lib.Refactor.estimate_k(methylation_data = meth_data, max_k = args.max_k)
         
 
 if __name__ == "__main__":

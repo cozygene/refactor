@@ -3,7 +3,7 @@
 import os
 import sys
 import argparse
-from refactor_lib import refactor
+from refactor_lib import refactor_lib
 
 REFACTOR_FORMATTED_EXTENSION = ".refactor"
 
@@ -34,7 +34,7 @@ def run():
       
       args = parser.parse_args()
 
-      return refactor.Refactor(datafile = args.datafile, 
+      return refactor_lib.Refactor(datafile = args.datafile, 
                                 k = args.k, 
                                 covarfile = args.covarfile,
                                 t = args.t, 

@@ -20,7 +20,7 @@ from numpy import zeros, loadtxt, random, log10, column_stack, ones, linspace
 import matplotlib.pyplot as plot
 from scipy import stats
 from refactor_lib import methylation_data
-from refactor_lib import refactor
+from refactor_lib import refactor_lib
 import statsmodels.api as sm
 
 
@@ -33,7 +33,7 @@ CELL_COMP_FILE = '../demo_files/demo_cellproportions.txt' # cell composition fil
 def run():
 
     # Run ReFACTor
-    refactor_obj  = refactor.Refactor(DATA_FILE, k, out="demo_refactor")
+    refactor_obj  = refactor_lib.Refactor(DATA_FILE, k, out="demo_refactor")
 
     # read methylation data
     meth_data = methylation_data.MethylationData(DATA_FILE)
