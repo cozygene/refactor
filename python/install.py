@@ -4,7 +4,10 @@ import os
 import sys
 from setuptools import setup
 
-
+if (sys.version_info > (3, 0)):
+    VERSION = 3
+else:
+    VERSION = 2
 
 if os.name == 'nt':
         
@@ -98,7 +101,7 @@ def setup_refactor():
     # try:   
     #     _winreg.SetValueEx(key = aKey,value_name="Path",type=_winreg.REG_EXPAND_SZ, value= os.path.join(os.path.dirname(sys.executable), "Scripts") ) 
     # except EnvironmentError:                                          
-    #     print "Encountered problems writing into the Registry..."
+    #     print("Encountered problems writing into the Registry...")
     # _winreg.CloseKey(aKey)
     # _winreg.CloseKey(aReg)        
     
@@ -197,9 +200,10 @@ def user_installation_confirmation(modules):
     returns True if user confirmed installation
     returns False otherwise
     """
-    request = raw_input ("Packages %s aren't installed. Do you want to start installation now? (y/n) " % str(modules))
+    print("Packages %s aren't installed" % str(modules))
+    request = _input("Do you want to start installation now? (y/n) ")
     while(request.lower() not in ['y', 'n']):
-        request = raw_input ("Packages %s aren't installed. Do you want to start installation now? (y/n) " % str(modules))
+        request = _input("Do you want to start installation now? (y/n) ")
 
     return request.lower() == 'y'
 
@@ -252,9 +256,9 @@ def install_refactor():
                 optional_dependencied.append(module)
         
         if obligatory_dependencies:
-            color_print("To run ReFACTor you must install the following packages: %s" % str(obligatory_dependencies), BACKGROUND.CYAN + FOREGROUND.RED)
+            color_print("To run ReFACTor you must install the following packages: %s" % str(obligatory_dependencies), BACKGROUND.BLACK + FOREGROUND.YELLOW)
         if optional_dependencied:
-            color_print("To run ReFACTor's demo.py you need to install: %s " % str(optional_dependencied), BACKGROUND.CYAN + FOREGROUND.RED)
+            color_print("To run ReFACTor's demo.py you need to install: %s " % str(optional_dependencied), BACKGROUND.BLACK + FOREGROUND.YELLOW)
 
 def isUserAdmin():
 
@@ -269,7 +273,7 @@ def isUserAdmin():
     elif os.name == 'posix':
         return os.getuid() == 0
     else:
-        raw_input("Make sure you're running this as Administrator user. Press any key to continue...")
+        _input("Make sure you're running this as Administrator user. Press any key to continue...")
         return True
         
 
@@ -289,6 +293,12 @@ def color_print(string, color):
     else:
         print(string)
 
+def _input(msg):
+    if VERSION == 3:
+        return input(msg)
+    else:
+        return raw_input(msg)
+
 if __name__ == '__main__':
 
     # run as root (root privilege is required to run python setup.py script and pip install)
@@ -302,11 +312,11 @@ if __name__ == '__main__':
             pass
         # on unix    
         elif os.name == 'posix':
-            print "Installation must be started as root, Running sudo..."
+            print("Installation must be started as root, Running sudo...")
             args = ['sudo', sys.executable] + sys.argv + [os.environ]
             # the next line replaces the currently-running process with the sudo, won't work the same way on windows
             os.execlpe('sudo', *args)
     
     install_refactor()
-    raw_input("\nPress any key to continue")
+    _input("\nPress any key to continue")
 	
