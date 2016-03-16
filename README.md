@@ -2,7 +2,7 @@
 
 Reference-Free Adjustment for Cell-Type composition (ReFACTor) is an unsupervised method for the correction of cell-type heterogeneity in epigenome-wide association studies (EWAS), which is based on a variant of principal component analysis (PCA). ReFACTor is described in the following [paper](http://) (upcoming).
 
-As decribed bellow, ReFACTor is available in R and Python. We recommend using the much faster python version.
+As decribed bellow, ReFACTor is available in both R and Python. We recommend using the much faster Python version (a command-line tool which does not require any programming experience).
 
 ### Download
 
@@ -10,7 +10,7 @@ As decribed bellow, ReFACTor is available in R and Python. We recommend using th
 2. Extract the ZIP file to a folder
 3. Make sure the demo provided works (see below)
 
-Dependencies for the Python version are described at the end of this README file.
+Information about dependencies for the Python version and their installation is described at the end of this README file.
 
 ### Input
 
@@ -156,13 +156,21 @@ t should be selected to be the number of sites after which the signal dramatical
 
 ### Dependencies
 
-For the Python version we recommend to use a standard Python distribution such as Anaconda (https://www.continuum.io/downloads). This release of ReFACTor was implemented for Python v2.7 and has the following dependencies:
+For the Python version we recommend to use a standard Python distribution such as Anaconda (https://www.continuum.io/downloads), which already includes all necessary dependencies.
+
+This release of ReFACTor was implemented for Python v2.7 and has the following dependencies:
 
     numpy
     scipy
     sklearn
     matplotlib (required only for demo.py)
     statsmodels (required only for demo.py)
+
+In case you already have an installed version of Python and do not want to install Anaconda Python, you can run the provided install.py python script found in the 'python' folder:
+```
+python install.py
+```
+The script automatically installs missing dependencies that are required for ReFACTor and adds the main refactor.py script to the path of your operating system. Note that in some environments the script may fail to install some of the dependencies, in which case you will need to manually install them.
 
 ### Citing ReFACTor
 
