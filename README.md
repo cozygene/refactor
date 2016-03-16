@@ -1,15 +1,15 @@
 # ReFACTor v1.0
 
-Reference-Free Adjustment for Cell-Type composition (ReFACTor) is an unsupervised method for the correction of cell-type heterogeneity in epigenome-wide association studies (EWAS), which is based on a variant of principal component analysis (PCA). ReFACTor is described in the following [paper](http://) (upcoming).
+Reference-Free Adjustment for Cell-Type composition (ReFACTor) is an unsupervised method for the correction of cell-type heterogeneity in epigenome-wide association studies (EWAS), which is based on a variant of principal component analysis (PCA). ReFACTor is described in the following <a href="http://" target="_blank">paper</a> (upcoming).
 
 As decribed bellow, ReFACTor is available in both R and Python. We recommend using the much faster Python version (a command-line tool which does not require any programming experience).
 
 ### Download
 
-1. Download the latest release from: https://github.com/cozygene/refactor/releases
+1. Download the latest release from <a href="https://github.com/cozygene/refactor/releases" target="_blank">here</a>
 2. Make sure the demo provided works (see below)
 
-Information about dependencies for the Python version and their installation is described at the end of this README file.
+Information about required dependencies of the Python version and their installation is described at the end of this README file.
 
 ### Input
 
@@ -83,7 +83,7 @@ python demo.py
 ### Data preparation
 
 ##### Preprocessing raw data
-ReFACTor is designed to handle Beta normalized methylation levels (although it may perform well on M-value normalized data as well). Prior to running ReFACTor, the data should be adjusted for known technical atrifacts of the technology used for probing the methylation levels as well as adjusted for known technical covariates (such as batches). For a comprehensive comparison between methods for preprocessing raw data collected by the Illumina 27K/450K platforms see [Lenhe et al. 2015](http://www.genomebiology.com/2015/16/1/37). In order to best fit to the assumptions of ReFACTor, any normalization applied should keep the data approximately normal.
+ReFACTor is designed to handle Beta normalized methylation levels (although it may perform well on M-value normalized data as well). Prior to running ReFACTor, the data should be adjusted for known technical atrifacts of the technology used for probing the methylation levels as well as adjusted for known technical covariates (such as batches). For a comprehensive comparison between methods for preprocessing raw data collected by the Illumina 27K/450K platforms see <a href="http://www.genomebiology.com/2015/16/1/37" target="_blank">Lenhe et al. (2015)</a>. In order to best fit to the assumptions of ReFACTor, any normalization applied should keep the data approximately normal.
 
 ##### Preparing data for ReFACTor
 
@@ -102,7 +102,7 @@ The manuscript describing ReFACTor demonstrates that the algorithm is robust to 
 
 ##### Selecting k (the number of assumed cell types)
 
-The estimate_k.py script (under the 'python' folder) computes a score for each of the first several eigenvalues of the covariance matrix of the input data. The score of the i-th eigenvalue is defined to be -log of the ratio between the i-th eigenvalue to the (i-1)-th eigenvalue, thus a high score of a specific eigenvalue suggests its eigenvector as a substantial variance component in the data (compared with the previous one). The ratio between adjacent eigenvalues, as well as other test statistics of the eigenvalues, is desribed by [Peres-Neto et al. (2005)](http://labs.eeb.utoronto.ca/jackson/computational%20statistics%20and%20data%20analysis.pdf) as a method for determining the number of non-trivial axes of variance in data.
+The estimate_k.py script (under the 'python' folder) computes a score for each of the first several eigenvalues of the covariance matrix of the input data. The score of the i-th eigenvalue is defined to be -log of the ratio between the i-th eigenvalue to the (i-1)-th eigenvalue, thus a high score of a specific eigenvalue suggests its eigenvector as a substantial variance component in the data (compared with the previous one). The ratio between adjacent eigenvalues, as well as other test statistics of the eigenvalues, is desribed by <a href="http://labs.eeb.utoronto.ca/jackson/computational%20statistics%20and%20data%20analysis.pdf" target="_blank">Peres-Neto et al.</a> as a method for determining the number of non-trivial axes of variance in data.
 
 For plotting the scores of the first several eigenvalues (starting from the second eigenvalue), run:
 ```
@@ -155,7 +155,7 @@ t should be selected to be the number of sites after which the signal dramatical
 
 ### Dependencies
 
-For the Python version of ReFACTor we recommend using Anaconda Python version 2.7 (https://www.continuum.io/downloads), which already includes all necessary dependencies.
+For the Python version of ReFACTor we recommend using <a href="https://www.continuum.io/downloads" target="_blank">Anaconda Python version 2.7</a>, which already includes all necessary dependencies.
 
 This release of ReFACTor was implemented for Python 2.7 and has the following dependencies:
 
