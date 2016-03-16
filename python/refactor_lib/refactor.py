@@ -2,8 +2,8 @@ import os
 import sys
 from sklearn import preprocessing
 from numpy import dot, linalg, sqrt, loadtxt
-import pca
-from regress import Regress
+from . import pca
+from .regress import Regress
 import matplotlib.pyplot as plot
 from numpy import dot, linalg, sqrt, loadtxt, linalg, log
 from methylation_data import MethylationData
@@ -108,6 +108,7 @@ class Refactor( object ):
         
         An = preprocessing.StandardScaler( with_mean = True, with_std = False ).fit(self.meth_data.data.transpose()).transform(self.meth_data.data.transpose())
         Bn = preprocessing.StandardScaler( with_mean = True, with_std = False ).fit(x).transform(x)
+        # ** python3.5 devision: sqrt return float on both python 2.7 and 3.5 and devision by float behave the same on both of the versions
         An = An * ( 1 / sqrt((An**2).sum(axis=0)) ) 
         Bn = Bn * ( 1 / sqrt((Bn**2).sum(axis=0)) )
 
@@ -180,6 +181,7 @@ class Refactor( object ):
         # Compute the distance of each site form its low rank approximation
         An = preprocessing.StandardScaler( with_mean = True, with_std = False ).fit(methylation_data.data.transpose()).transform(methylation_data.data.transpose())
         Bn = preprocessing.StandardScaler( with_mean = True, with_std = False ).fit(x).transform(x)
+        # ** python 3 devision: sqrt return float on both python 2.7 and 3.5 and devision by float behave the same on both of the versions
         An = An * ( 1 / sqrt((An**2).sum(axis=0)) ) 
         Bn = Bn * ( 1 / sqrt((Bn**2).sum(axis=0)) )
         distances = sorted(sqrt(((An - Bn)**2).sum(axis=0)))

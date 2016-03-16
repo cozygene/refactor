@@ -1,9 +1,6 @@
 import os
 import sys
 import argparse
-from sklearn import preprocessing
-from numpy import dot, linalg, sqrt, loadtxt
-from refactor_lib import pca
 from refactor_lib import methylation_data
 from refactor_lib import refactor
 
