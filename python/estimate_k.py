@@ -3,10 +3,9 @@ import sys
 import argparse
 from sklearn import preprocessing
 from numpy import dot, linalg, sqrt, loadtxt
-import pca
-import refactor_lib
-from methylation_data import MethylationData
-from refactor_lib import Refactor
+from refactor_lib import pca
+from refactor_lib import methylation_data
+from refactor_lib import refactor
 
 
 class kEstimateArgumentParser(argparse.ArgumentParser):
@@ -29,7 +28,7 @@ def run():
         args = parser.parse_args()
 
         # load methylation data file
-        meth_data = MethylationData(datafile = args.datafile)
+        meth_data = methylation_data.MethylationData(datafile = args.datafile)
         n = meth_data.data.shape[1] # number of samples
         
         # Validate input
@@ -37,7 +36,7 @@ def run():
             print("max_k must be greater than 2 and smaller than the number of samples")
             sys.exit(2)
         
-        Refactor.estimate_k(methylation_data = meth_data, max_k = args.max_k)
+        refactor.Refactor.estimate_k(methylation_data = meth_data, max_k = args.max_k)
         
 
 if __name__ == "__main__":

@@ -3,10 +3,9 @@ import sys
 import argparse
 from sklearn import preprocessing
 from numpy import dot, linalg, sqrt, loadtxt
-import pca
-import refactor_lib
-from methylation_data import MethylationData
-from refactor_lib import Refactor
+from refactor_lib import pca
+from refactor_lib import methylation_data
+from refactor_lib import refactor
 
 
 class tEstimateArgumentParser(argparse.ArgumentParser):
@@ -29,7 +28,7 @@ def run():
         args = parser.parse_args()
 
         # load methylation data file
-        meth_data = MethylationData(datafile = args.datafile)
+        meth_data = methylation_data.MethylationData(datafile = args.datafile)
 
         m = meth_data.data.shape[0] # number of sites
         if (m < args.numsites):
@@ -40,7 +39,7 @@ def run():
             print("numsites must be greater than 0")
             sys.exit(2)
 
-        Refactor.estimate_t(methylation_data = meth_data, k = args.k, numsites = args.numsites)
+        refactor.Refactor.estimate_t(methylation_data = meth_data, k = args.k, numsites = args.numsites)
         
 
 if __name__ == "__main__":
