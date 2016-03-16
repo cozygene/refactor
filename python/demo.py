@@ -24,7 +24,7 @@ from refactor_lib import refactor
 import statsmodels.api as sm
 
 
-K = 5                                                     # the number of assumed cell types
+k = 5                                                     # the number of assumed cell types
 # Simulated data:
 DATA_FILE = '../demo_files/demo_datafile.txt'             # methylation levels file path
 PHENO_FILE = '../demo_files/demo_phenotype.txt'           # phenotype file path
@@ -33,7 +33,7 @@ CELL_COMP_FILE = '../demo_files/demo_cellproportions.txt' # cell composition fil
 def run():
 
     # Run ReFACTor
-    refactor_obj  = refactor.Refactor(DATA_FILE, K, out="demo_refactor")
+    refactor_obj  = refactor.Refactor(DATA_FILE, k, out="demo_refactor")
 
     # read methylation data
     meth_data = methylation_data.MethylationData(DATA_FILE)
@@ -63,7 +63,7 @@ def run():
 
     # Run an EWAS corrected for the first k ReFACTor components
     print("Adjusted analysis using ReFACTor...")
-    y = associations_test(meth_data, pheno, refactor_obj.components[:,:K])
+    y = associations_test(meth_data, pheno, refactor_obj.components[:,:k])
     plot.subplot(223)
     draw_qqplot(y=y, title='Adjusted analysis using ReFACTor', xtitle='-log10(expected)', ytitle='-log10(observed)')
 

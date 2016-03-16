@@ -86,9 +86,8 @@ REFACTOR_OPTIONAL_DEPENDENCIES = ['matplotlib','statsmodels'] # for demo only
 
 def setup_refactor():
     """
-    adds refactor.py to PATH so it can be run from anywhere
-    NOTE: on windows: refactor.py is added to C:\PythonXX\Scripts
-          but this folder is not on PATH by default and user must add it so he can run refactor.py from anywhere
+    Adds refactor.py to the PATH so it can be executed from anywhere.
+    NOTE: on windows refactor.py is added to C:\PythonXX\Scripts, but this folder is not in the PATH by default.
     """
     # add "install" command for the setup script. "mimic" user choice: setup install 
     sys.argv.append("install")
@@ -172,7 +171,7 @@ def install(module_name):
     if exit_code == 0: # success
         try:
             __import__(module_name)
-            color_print("Package %s installed successfully!" % module_name, FOREGROUND.GREEN)
+            color_print("Package %s was installed successfully!" % module_name, FOREGROUND.GREEN)
             return True
             
         except Exception as e:
@@ -216,7 +215,7 @@ def check_dependencies(dependencies_list):
     dependencies_to_install = []
 
     # check if deoendencies are installed
-    print("Checking if dependencies are installed...")
+    print("Checking if required dependencies are installed...")
     for module in dependencies_list:
         if not already_installed(module):
             dependencies_to_install.append(module)
@@ -225,7 +224,7 @@ def check_dependencies(dependencies_list):
     if len(dependencies_to_install) > 0:
         if user_installation_confirmation(dependencies_to_install):
             if not load_pip():
-                print("pip (installation package) wasn't found. Can't install dependencies")
+                print("pip (installation package) wasn't found. Can't install dependencies.")
             else:
                 dependencies_to_install = [module for module in dependencies_to_install if install(module) == False]
 
@@ -258,7 +257,7 @@ def install_refactor():
         if obligatory_dependencies:
             color_print("To run ReFACTor you must install the following packages: %s" % str(obligatory_dependencies), BACKGROUND.BLACK + FOREGROUND.YELLOW)
         if optional_dependencied:
-            color_print("To run ReFACTor's demo.py you need to install: %s " % str(optional_dependencied), BACKGROUND.BLACK + FOREGROUND.YELLOW)
+            color_print("To run ReFACTor's demo.py you must install: %s " % str(optional_dependencied), BACKGROUND.BLACK + FOREGROUND.YELLOW)
 
 def isUserAdmin():
 
@@ -312,7 +311,7 @@ if __name__ == '__main__':
             pass
         # on unix    
         elif os.name == 'posix':
-            print("Installation must be started as root, Running sudo...")
+            print("Installation must be started as root. Running sudo...")
             args = ['sudo', sys.executable] + sys.argv + [os.environ]
             # the next line replaces the currently-running process with the sudo, won't work the same way on windows
             os.execlpe('sudo', *args)

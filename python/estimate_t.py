@@ -16,7 +16,7 @@ class tEstimateArgumentParser(argparse.ArgumentParser):
         sys.exit(2)
 
 def run():
-        parser = tEstimateArgumentParser(prog=os.path.basename(sys.argv[0]), description = "estimate_t: a tool for estimating the parameter t for ReFACTor, by computing a score for the sites that were best approximated by a low-rank approximation. t should be selected to be the number of sites with substantial signal.", epilog = "", add_help=False)
+        parser = tEstimateArgumentParser(prog=os.path.basename(sys.argv[0]), description = "estimate_t: a tool for estimating the parameter t for ReFACTor by computing a score for the sites based on their low-rank approximation. t should be selected to be the number of sites with substantial signal.", epilog = "", add_help=False)
         required = parser.add_argument_group('required arguments')
         required.add_argument('--datafile', required = True, type = str, help = "A data matrix file of beta-normalized methylation levels; see the instructions of refactor.py for more details")
         required.add_argument('--k', required = True, type = int, help = "The number of assumed cell types")
