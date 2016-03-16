@@ -90,6 +90,7 @@ ReFACTor is designed to handle Beta normalized methylation levels (although it m
 
 For best performance, we suggest to take the following steps when preparing the data for ReFACTor:
   * Exclude problematic probes - remove non-autosomal probes, cross-hybridized probes and probes with SNPs. Note that once the ReFACTor components are computed, any of the exluded probes can be rejoined to the data for the rest of the analysis.
+  * Exclude outlier samples - outliers can be revealed using dimensionality reduction methods such as PCA or multidimensional scaling (MDS).
   * Adjust the data for covariates - adjusting the methylation levels, before running ReFACTor, for known technical covariates such as batchs can be crutial in some cases. In addition, we observe that adjusting the methylation levels for genome-wide affecting factors, such as gender, smoking and global ancestry, improves the performance of ReFACTor. We do not suggest to adjust the data for covariates that are correlated with the cell type composition, such as age, before running ReFACTor (these covariates should be accounted for after running ReFACTor). The 'covarfile' optional argument allows to adjust the data for covariates before running ReFACTor.
 
 Additional remarks:
@@ -165,7 +166,10 @@ For the Python version we recommend to use a standard Python distribution such a
 
 ### Citing ReFACTor
 
-If you use ReFACTor in any published work, please cite the manuscript describing the method (upcoming).
+If you use ReFACTor in any published work, please cite the manuscript describing the method:
+
+Elior Rahmani, Noah Zaitlen, Yael Baran, Celeste Eng, Donglei Hu, Joshua Galanter, Sam Oh, Esteban G Burchard, Eleazar Eskin, James Zou and Eran Halperin. "Sparse PCA corrects for cell type heterogeneity in epigenome-wide association studies". Nature Methods (2016).
+
 
 ### Authors
 
