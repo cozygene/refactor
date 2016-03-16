@@ -198,7 +198,7 @@ def user_installation_confirmation(modules):
     returns False otherwise
     """
     request = raw_input ("Packages %s aren't installed. Do you want to start installation now? (y/n) " % str(modules))
-    while(request.lower() != 'y' and request.lower != 'n'):
+    while(request.lower() not in ['y', 'n']):
         request = raw_input ("Packages %s aren't installed. Do you want to start installation now? (y/n) " % str(modules))
 
     return request.lower() == 'y'
