@@ -202,7 +202,7 @@ def user_installation_confirmation(modules):
     print("Packages %s aren't installed" % str(modules))
     request = _input("Do you want to start installation now? (y/n) ")
     while(request.lower() not in ['y', 'n']):
-        request = _input("Do you want to start installation now? (y/n) ")
+        request = _input("Please select 'y' or 'n': (y/n) ")
 
     return request.lower() == 'y'
 
