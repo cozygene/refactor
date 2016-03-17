@@ -2,42 +2,44 @@
 
 Reference-Free Adjustment for Cell-Type composition (ReFACTor) is an unsupervised method for the correction of cell-type heterogeneity in epigenome-wide association studies (EWAS), which is based on a variant of principal component analysis (PCA). ReFACTor is described in the following <a href="http://" target="_blank">paper</a> (upcoming).
 
-As decribed bellow, ReFACTor is available in both R and Python. We recommend using the much faster Python version (a command-line tool which does not require any programming experience).
+ReFACTor is available in both R and Python. We recommend using the much faster Python version (an easy to use command-line tool which doesn't require any programming experience).
+
 
 ### Download
 
 1. Download the latest release from <a href="https://github.com/cozygene/refactor/releases" target="_blank">here</a>
-2. Make sure the demo provided works (see below)
+2. To use Python version:
+  1. If you don't have Python installed - install it from here: <a href="https://www.continuum.io/downloads" target="_blank">Anaconda Python version 2.7</a> (it will also install all required dependencies).
+  2. Install ReFACTor -  run ```cd python; python install.py``` (it will tell you which required dependencies you need to install).
+3. Make sure the demo provided works. Run ```python install.py``` for Python version or ```Rscript demo.R``` for R version
 
-Information about required dependencies of the Python version and their installation is described at the end of this README file.
+### Running ReFACTor
 
-### Input
+####Python
 
-ReFACTor gets the following arguments as an input:
+Executed refactor.py script in the 'python' folder from the command line as follows:
 
-Required:
-  * datafile: path to a sites by samples matrix file of tab-delimited beta-normalized methylation levels; the first row should contain the sample IDs and the first column should contain the CpG IDs (see 'demo_files/demo_datafile.txt' for example). Important data preparation  instructions are described below under 'Data preparation'.
-  * k: the number of assumed cell types; guidlines for selecting k are desribed below under 'Parameters selection'.
+```
+python refactor.py --datafile <datafile> --k <k>
+```
+There are also optional arguments you can include (more details under "Input" section):
+```
+python refactor.py --datafile <datafile> --k <k> --covarfile [covarfile] --t [t] --numcomp [numcomp] --stdth [stdth] --out [out]
+```
 
-Optional:
-  * covarfile: path to a samples by covariates matrix file of tab-delimited covariates; the first column should contain the sample IDs ordered as in the first row of the data file (see 'demo_files/demo_covariates.txt' for example). If provided, the data are adjusted for the covariates before running ReFACTor. For more details see 'Data preparation' below.
-  * t: the number of sites to use for computing the ReFACTor components (default is 500); guidlines for selecting t are desribed below under 'Parameters selection'.
-  * numcomp: the number of ReFACTor components to output (default is the same as k)
-  * stdth: standard deviation (std) threshold for excluding low variance sites; all sites with std < stdth will be excluded before running ReFACTor (default is 0.02). For more details see 'Data preparation' below.
-  * out: prefix of the output files (default is 'refactor')
+Information about required dependencies of the Python version and their installation is described at "Dependencies" section.
 
-### Output
+##### Demo
+The following demo computes the ReFACTor components of a simulated example dataset and performs an EWAS. The demo shows that while a standard PCA cannot adjust the data well, using ReFACTor can adjust the data similarly to using the true cell proportions. From the command line run:
 
-The software outputs two files:
+```
+python demo.py
+```
 
-1. refactor.out.components.txt - a matrix with the first numcomp ReFACTor components for each individual
-2. refactor.out.rankedlist.txt - a ranked list of the methylation sites; from the most informative to the least informative
-
-Note that the default prefix of these files ('refactor') can be changed using the 'out' argument.
 
 ### R
 
-The refactor.R function in the 'R' folder implements ReFACTor and can be executed directly from R. For example:
+Edit refactor.R  in the 'R' folder with the arguments you want and execute directly from R or from command line. For example:
 
 ```R
 # <R code>
@@ -59,26 +61,30 @@ The following demo computes the ReFACTor components of a simulated example datas
 Rscript demo.R
 ```
 
+### Input Arguments
 
-### Python
+ReFACTor gets the following arguments as an input:
 
-The refactor.py script in the 'python' folder implements ReFACTor and can be executed from the command line as follows:
+Required:
+  * **datafile** - path to a sites by samples matrix file of tab-delimited beta-normalized methylation levels; the first row should contain the sample IDs and the first column should contain the CpG IDs (see 'demo_files/demo_datafile.txt' for example). Important data preparation  instructions are described below under 'Data preparation'.
+  * **k** - the number of assumed cell types; guidlines for selecting k are desribed below under 'Parameters selection'.
 
-```
-python refactor.py --datafile <datafile> --k <k>
-```
-or, if including one or more of the optional arguments:
-```
-python refactor.py --datafile <datafile> --k <k> --covarfile <covarfile> --t <t> --numcomp <numcomp> --stdth <stdth> --out <out>
-```
+Optional:
+  * **covarfile** - path to a samples by covariates matrix file of tab-delimited covariates; the first column should contain the sample IDs ordered as in the first row of the data file (see 'demo_files/demo_covariates.txt' for example). If provided, the data are adjusted for the covariates before running ReFACTor. For more details see 'Data preparation' below.
+  * **t** - the number of sites to use for computing the ReFACTor components (default is 500); guidlines for selecting t are desribed below under 'Parameters selection'.
+  * **numcomp** - the number of ReFACTor components to output (default is the same as k)
+  * **stdth** - standard deviation (std) threshold for excluding low variance sites; all sites with std [stdth] will be excluded before running ReFACTor (default is 0.02). Removing sites with very low variance improves the results of ReFACTor, see 'Data preparation' below.
+  * **out** - prefix of the output files (default is 'refactor')
 
-##### Demo
+### Output
 
-The following demo computes the ReFACTor components of a simulated example dataset and performs an EWAS. The demo shows that while a standard PCA cannot adjust the data well, using ReFACTor can adjust the data similarly to using the true cell proportions. From the command line run:
+The software outputs two files:
 
-```
-python demo.py
-```
+1. refactor.out.components.txt - a matrix with the first numcomp ReFACTor components for each individual
+2. refactor.out.rankedlist.txt - a ranked list of the methylation sites; from the most informative to the least informative
+
+Note that the default prefix of these files ('refactor') can be changed using the '--out' argument.
+
 
 ### Data preparation
 
@@ -88,13 +94,11 @@ ReFACTor is designed to handle Beta normalized methylation levels (although it m
 ##### Preparing data for ReFACTor
 
 For best performance, we suggest to take the following steps when preparing the data for ReFACTor:
-  * Exclude problematic probes - remove non-autosomal probes, cross-hybridized probes and probes with SNPs. Note that once the ReFACTor components are computed, any of the exluded probes can be rejoined to the data for the rest of the analysis.
-  * Exclude outlier samples - outliers can be revealed using dimensionality reduction methods such as PCA or multidimensional scaling (MDS).
-  * Adjust the data for covariates - adjusting the methylation levels, before running ReFACTor, for known technical covariates such as batch information can be crutial in some cases. In addition, we observe that adjusting the methylation levels for genome-wide affecting factors, such as gender, smoking status and global ancestry, improves the performance of ReFACTor. However, we do not suggest to adjust the data for covariates that are correlated with the cell type composition, such as age, before running ReFACTor (these covariates should be accounted for after running ReFACTor). The 'covarfile' optional argument allows to adjust the data for covariates before running ReFACTor.
-
-Additional remarks:
-  * Many sites in the Illumina 27K/450K platforms are constant or nearly-constant. We observe that removing sites with very low variance improves the performance of ReFACTor (defined by the 'stdth' argument; the default value should be sufficient in  most cases).
-  * The current version of ReFACTor does not handle missing values. If missing values exist in the data they should be assigned with values before running ReFACTor (e.g. for each site its missings values can be assigned with the mean value of the site - across all smaples with no missing values).
+  * **exclude problematic probes** - remove non-autosomal probes, cross-hybridized probes and probes with SNPs. Note that once the ReFACTor components are computed, any of the exluded probes can be rejoined to the data for the rest of the analysis.
+  * **exclude outlier samples** - outliers can be revealed using dimensionality reduction methods such as PCA or multidimensional scaling (MDS).
+  * **adjust the data for covariates** ('covarfile'  argument) - adjusting the methylation levels, before running ReFACTor, for known technical covariates such as batch information can be crutial in some cases. In addition, we observe that adjusting the methylation levels for genome-wide affecting factors, such as gender, smoking status and global ancestry, improves the performance of ReFACTor. However, we do not suggest to adjust the data for covariates that are correlated with the cell type composition, such as age, before running ReFACTor (these covariates should be accounted for after running ReFACTor). The '--covarfile' optional argument allows to adjust the data for covariates before running ReFACTor.
+  * **remove sites with very low variance** ('stdth' argument) - Many sites in the Illumina 27K/450K platforms are constant or nearly-constant. We observe that removing those sites improves the performance of ReFACTor (defined by the '--stdth' argument; the default value should be sufficient in  most cases).
+  * **handle missing values** - The current version of ReFACTor does not handle missing values. If missing values exist in the data they should be assigned with values before running ReFACTor (e.g. for each site its missings values can be assigned with the mean value of the site - across all smaples with no missing values).
 
 ### Parameters selection
 
@@ -155,8 +159,6 @@ t should be selected to be the number of sites after which the signal dramatical
 
 ### Dependencies (Python version)
 
-For the Python version of ReFACTor we recommend using <a href="https://www.continuum.io/downloads" target="_blank">Anaconda Python version 2.7</a>, which already includes all necessary dependencies.
-
 This release of ReFACTor was implemented for Python 2.7 and has the following dependencies:
 
     numpy
@@ -165,11 +167,13 @@ This release of ReFACTor was implemented for Python 2.7 and has the following de
     matplotlib (required only for demo.py)
     statsmodels (required only for demo.py)
 
-In case you already have an installed version of Python and do not want to install Anaconda Python, you can run the provided install.py python script found in the 'python' folder:
+We recommend installing <a href="https://www.continuum.io/downloads" target="_blank">Anaconda Python version 2.7</a>, which already includes all necessary dependencies.
+
+If you already have Python installed and do not want to install Anaconda Python, run 'install.py' script (found in the 'python' folder):
 ```
 python install.py
 ```
-The script automatically installs missing dependencies that are required for ReFACTor and adds the main refactor.py script to the path of your operating system. Note that in some environments the script may fail to install some of the dependencies, in which case you will need to manually install them.
+The script automatically installs missing dependencies that are required for ReFACTor. It also adds 'refactor.py' script to the path of your operating system (not implemented on Windows). Note that in some environments the script may fail to install some of the dependencies, in which case you will need to manually install them.
 
 ### Citing ReFACTor
 
