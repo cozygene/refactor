@@ -8,10 +8,10 @@ ReFACTor is available in both R and Python. We recommend using the much faster P
 ### Download
 
 1. Download the latest release from <a href="https://github.com/cozygene/refactor/releases" target="_blank">here</a>
-2. To use Python version:
-  1. If you don't have Python installed - install it from here: <a href="https://www.continuum.io/downloads" target="_blank">Anaconda Python version 2.7</a> (it will also install all required dependencies).
-  2. Install ReFACTor -  run ```cd python; python install.py``` (it will tell you which required dependencies you need to install).
-3. Make sure the demo provided works. Run ```python install.py``` for Python version or ```Rscript demo.R``` for R version
+2. To use the Python version:
+  1. Install <a href="https://www.continuum.io/downloads" target="_blank">Anaconda Python version 2.7</a> (automatically includes all required dependencies).
+  2. Install ReFACTor by running the provided install.py file (run ```cd python; python install.py```). For more details see "Dependencies (Python version)".
+3. Make sure the provided demo works (see below).
 
 ### Running ReFACTor
 
