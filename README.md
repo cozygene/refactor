@@ -17,17 +17,15 @@ ReFACTor is available in both R and Python. We recommend using the much faster P
 
 ####Python
 
-Executed refactor.py script in the 'python' folder from the command line as follows:
+Execute the refactor.py script found in the 'python' folder from the command line as follows:
 
 ```
 python refactor.py --datafile <datafile> --k <k>
 ```
-There are also optional arguments you can include (more details under "Input" section):
+Additional optional arguments can be included (for more details see "Input"):
 ```
 python refactor.py --datafile <datafile> --k <k> --covarfile [covarfile] --t [t] --numcomp [numcomp] --stdth [stdth] --out [out]
 ```
-
-Information about required dependencies of the Python version and their installation is described at "Dependencies" section.
 
 ##### Demo
 The following demo computes the ReFACTor components of a simulated example dataset and performs an EWAS. The demo shows that while a standard PCA cannot adjust the data well, using ReFACTor can adjust the data similarly to using the true cell proportions. From the command line run:
@@ -39,7 +37,7 @@ python demo.py
 
 ### R
 
-Edit refactor.R  in the 'R' folder with the arguments you want and execute directly from R or from command line. For example:
+The refactor.R function in the 'R' folder can be executed directly from R. For example:
 
 ```R
 # <R code>
@@ -70,10 +68,10 @@ Required:
   * **k** - the number of assumed cell types; guidlines for selecting k are desribed below under 'Parameters selection'.
 
 Optional:
-  * **covarfile** - path to a samples by covariates matrix file of tab-delimited covariates; the first column should contain the sample IDs ordered as in the first row of the data file (see 'demo_files/demo_covariates.txt' for example). If provided, the data are adjusted for the covariates before running ReFACTor. For more details see 'Data preparation' below.
+  * **covarfile** - path to a samples by covariates matrix file of tab-delimited covariates; the first column should contain the sample IDs ordered as in the first row of the data file (see 'demo_files/demo_covariates.txt' for example). If provided, the data are adjusted for the covariates before running ReFACTor. For more details see 'Data preparation'.
   * **t** - the number of sites to use for computing the ReFACTor components (default is 500); guidlines for selecting t are desribed below under 'Parameters selection'.
   * **numcomp** - the number of ReFACTor components to output (default is the same as k)
-  * **stdth** - standard deviation (std) threshold for excluding low variance sites; all sites with std [stdth] will be excluded before running ReFACTor (default is 0.02). Removing sites with very low variance improves the results of ReFACTor, see 'Data preparation' below.
+  * **stdth** - standard deviation (std) threshold for excluding low variance sites; all sites with std < stdth will be excluded before running ReFACTor (default is 0.02). For more details see 'Data preparation'.
   * **out** - prefix of the output files (default is 'refactor')
 
 ### Output
