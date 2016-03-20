@@ -3,6 +3,7 @@ import sys
 from numpy import loadtxt, delete, isnan, nanvar, where, std
 from numpy.ma import average, masked_array
 import copy
+from bisect import bisect_right
 
 COMPRESSED_FILENAME = "methylation_data"
 
@@ -39,27 +40,40 @@ class MethylationData( object ):
 
         return data
 
+    @staticmethod
+    def binary_search_gt(sorted_list, x):
+        """
+        Find leftmost value greater than x and returns it's index
+        """
+        i = bisect_right(sorted_list, x)
+        if i != len(sorted_list):
+            return i
+        raise ValueError
+
+    def _exclude_sites_from_data(self, sites_indicies_list):
+        """
+        this function removes from the data the cpg sites which indices found in sites_indicies_list
+        it updates the sites_size, the cpgnames list and the list holds the average value per site
+        """
+        self.data = delete(self.data, sites_indicies_list, axis = 0)
+        self.cpgnames = delete(self.cpgnames, sites_indicies_list)
+        self.sites_size = len(self.cpgnames)
+
     def _filter_sites_by_std(self, th):
         """
         Removes sites with std lower than the specified threshold.
         """
         stds = std(self.data,1)
-        stds_sorted = sorted(stds)
         stds_sorted_ind = stds.argsort()
-        p = self.sites_size-1
-        while (p > 0):
-            if stds_sorted[p] < th:
-                p += 1
-                break
-            p -= 1
+        stds_sorted = stds[stds_sorted_ind]
+
+        p = self.binary_search_gt(stds_sorted, th)
         if (p == self.sites_size):
             print("ERROR: the provided stdth parameter excludes all sites")
             sys.exit(2)
-        sites = stds_sorted_ind[p:]
-        self.data = self.data[sites,:]
-        # Update class fields
-        self.sites_size, self.samples_size = self.data.shape
-        self.cpgnames = self.cpgnames[sites]
+        exclude_ind = stds_sorted_ind[:p]
+        self._exclude_sites_from_data(exclude_ind)
+      
 
     def _copy(self):
         """
