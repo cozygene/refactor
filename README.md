@@ -1,6 +1,6 @@
 # ReFACTor v1.0
 
-Reference-Free Adjustment for Cell-Type composition (ReFACTor) is an unsupervised method for the correction of cell-type heterogeneity in epigenome-wide association studies (EWAS), which is based on a variant of principal component analysis (PCA). ReFACTor is described in the following <a href="http://" target="_blank">paper</a> (upcoming).
+Reference-Free Adjustment for Cell-Type composition (ReFACTor) is an unsupervised method for the correction of cell-type heterogeneity in epigenome-wide association studies (EWAS), which is based on a variant of principal component analysis (PCA). ReFACTor is described in the following <a href="http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3809.html" target="_blank">paper</a>.
 
 ReFACTor is available in both R and Python. We recommend using the much faster Python version (an easy to use command-line tool which doesn't require any programming experience).
 
