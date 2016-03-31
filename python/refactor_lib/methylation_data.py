@@ -40,16 +40,6 @@ class MethylationData( object ):
 
         return data
 
-    @staticmethod
-    def binary_search_gt(sorted_list, x):
-        """
-        Find leftmost value greater than x and returns it's index
-        """
-        i = bisect_right(sorted_list, x)
-        if i != len(sorted_list):
-            return i
-        raise ValueError
-
     def _exclude_sites_from_data(self, sites_indicies_list):
         """
         this function removes from the data the cpg sites which indices found in sites_indicies_list
@@ -67,7 +57,7 @@ class MethylationData( object ):
         stds_sorted_ind = stds.argsort()
         stds_sorted = stds[stds_sorted_ind]
 
-        p = self.binary_search_gt(stds_sorted, th)
+        p = bisect_right(stds_sorted, th) # binary search: find leftmost value greater than th and returns it's index
         if (p == self.sites_size):
             print("ERROR: the provided stdth parameter excludes all sites")
             sys.exit(2)
