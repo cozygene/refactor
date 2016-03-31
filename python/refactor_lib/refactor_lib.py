@@ -58,7 +58,7 @@ class Refactor( object ):
 
     def _validate_num_comp(self,num_comp):
         if num_comp and not (num_comp >= self.k and num_comp <= self.meth_data.samples_size):
-            print("ERROR: the number of components must be at least k and smaller than the number of samples. num_comp = %s, samples = %s, k = %s" % (self.t, self.meth_data.samples_size, self.k))
+            print("ERROR: the number of components must be at least k and smaller than the number of samples. num_comp = %s, samples = %s, k = %s" % (num_comp, self.meth_data.samples_size, self.k))
             self._terminate_refactor()
 
         return num_comp if num_comp else self.k
