@@ -179,6 +179,9 @@ If you use ReFACTor in any published work, please cite the manuscript describing
 
 Elior Rahmani, Noah Zaitlen, Yael Baran, Celeste Eng, Donglei Hu, Joshua Galanter, Sam Oh, Esteban G Burchard, Eleazar Eskin, James Zou and Eran Halperin. "Sparse PCA corrects for cell type heterogeneity in epigenome-wide association studies". Nature Methods (2016).
 
+Remark:
+The data contributed to GEO (<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE77716" target="_blank">GSE77716</a>) is the full GALA 2 dataset. In the
+<a href="http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3809.html" target="_blank">ReFACTor paper</a> we used only a subset of the data that was available for us at the time of the analysis. As descibred in the paper, Figure 2 was generated using 78 samples (for which we had cell counts at the time of the analysis). The identifiers of these individuals can be found <a href="https://github.com/cozygene/refactor/blob/master/assets/Sample_ids_for_Fig2.txt" target="_blank">here</a>.
 
 ### Authors
 
