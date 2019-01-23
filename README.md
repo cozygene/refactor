@@ -17,7 +17,7 @@ ReFACTor is also available in standalone implementations in both R and Python (d
 
 ### Running ReFACTor
 
-####Python
+#### Python
 
 Execute the refactor.py script found in the 'python' folder from the command line as follows:
 
