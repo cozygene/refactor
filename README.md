@@ -187,7 +187,7 @@ The data contributed to GEO (<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.
 
 ### Authors
 
-This software was developed by Reut Yedidim, Noah Zaitlen and Elior Rahmani.
+This software was developed by Reut Yedidim, Noah Zaitlen and Elior Rahmani (elior.rahmani@gmail.com).
 
-For any question and for reporting bugs please send an email to Elior Rahmani at: elior.rahmani@gmail.com
+For any questions and for reporting bugs please open an issue. 
 
